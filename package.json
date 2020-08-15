@@ -1,25 +1,40 @@
 {
 	"name": "gmod-sdk",
 	"displayName": "GMod SDK",
-	"description": "",
+	"description": "Makes Garry's Mod addon development easier",
 	"version": "0.0.1",
+	"publisher": "BadgerCode",
+	"repository": "https://github.com/BadgerCode/GMod-SDK-VSCode",
 	"engines": {
 		"vscode": "^1.48.0"
 	},
 	"categories": [
 		"Other"
 	],
-	"activationEvents": [
-		"onCommand:gmod-sdk.helloWorld"
-	],
 	"main": "./out/extension.js",
+	"activationEvents": [
+		"onView:gmodMenuSideBar"
+	],
 	"contributes": {
-		"commands": [
-			{
-				"command": "gmod-sdk.helloWorld",
-				"title": "Hello World"
-			}
-		]
+		"views": {
+			"gmod-sdk": [
+				{
+					"id": "gmodMenuSideBar",
+					"name": "Garry's Mod",
+					"icon": "./resources/menu-icon.svg",
+					"contextualTitle": "Garry's Mod"
+				}
+			]
+		},
+		"viewsContainers": {
+			"activitybar": [
+				{
+					"id": "gmod-sdk",
+					"title": "Garry's Mod",
+					"icon": "./resources/menu-icon.svg"
+				}
+			]
+		}
 	},
 	"scripts": {
 		"vscode:prepublish": "npm run compile",
