@@ -33,7 +33,7 @@
 			},
 			{
 				"command": "gmodAddonInfo.refresh",
-				"title": "Refresh",
+				"title": "Refresh Garry's Mod Addon Information",
 				"icon": {
 					"light": "resources/light/refresh.svg",
 					"dark": "resources/dark/refresh.svg"
