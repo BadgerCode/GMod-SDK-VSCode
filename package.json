@@ -27,9 +27,9 @@
 			"gmod-sdk": [
 				{
 					"id": "gmodMenuSideBar",
-					"name": "Garry's Mod",
+					"name": "Addon Overview",
 					"icon": "./resources/menu-icon.svg",
-					"contextualTitle": "Garry's Mod"
+					"contextualTitle": "Addon Information"
 				}
 			]
 		},
