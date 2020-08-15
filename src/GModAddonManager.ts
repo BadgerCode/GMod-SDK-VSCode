@@ -22,7 +22,7 @@ export class GModAddonManager {
 
         fs.writeFileSync(addonJSONPath, JSON.stringify(addonInfo, null, 4));
 
-        vscode.window.showInformationMessage('Creating GMod addon');
+        vscode.window.showInformationMessage('Created an empty GMod addon');
     }
 
     getAddonInfo(): GModAddonInfo | undefined {

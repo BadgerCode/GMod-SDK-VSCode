@@ -21,8 +21,25 @@
 			{
 				"command": "gmodsdk.createAddon",
 				"title": "Create Garry's Mod Addon"
+			},
+			{
+				"command": "gmodAddonInfo.refresh",
+				"title": "Refresh",
+				"icon": {
+					"light": "resources/light/refresh.svg",
+					"dark": "resources/dark/refresh.svg"
+				}
 			}
 		],
+		"menus": {
+			"view/title": [
+				{
+					"command": "gmodAddonInfo.refresh",
+					"when": "view == gmodAddonInfo",
+					"group": "navigation"
+				}
+			]
+		},
 		"views": {
 			"gmod-sdk": [
 				{

@@ -3,17 +3,20 @@ import * as path from 'path';
 import { GModAddonManager, GModAddonInfo } from './GModAddonManager';
 
 export class GModAddonOverviewProvider implements vscode.TreeDataProvider<GModMenuItem> {
+    private _onDidChangeTreeData: vscode.EventEmitter<GModMenuItem | undefined> = new vscode.EventEmitter<GModMenuItem | undefined>();
+    readonly onDidChangeTreeData: vscode.Event<GModMenuItem | undefined> = this._onDidChangeTreeData.event;
+
     private addonInfo: GModAddonInfo | undefined;
 
     constructor(private addonManager: GModAddonManager) {
         this.addonInfo = this.addonManager.getAddonInfo();
     }
 
-    getTreeItem(element: GModMenuItem): vscode.TreeItem | Thenable<vscode.TreeItem> {
+    getTreeItem(element: GModMenuItem): vscode.TreeItem {
         return element;
     }
 
-    getChildren(element?: GModMenuItem | undefined): vscode.ProviderResult<GModMenuItem[]> {
+    getChildren(element?: GModMenuItem): Thenable<GModMenuItem[]> {
         if (this.addonInfo == undefined)
             return Promise.resolve([]);
 
@@ -50,6 +53,11 @@ export class GModAddonOverviewProvider implements vscode.TreeDataProvider<GModMe
         else {
             return Promise.resolve([]);
         }
+    }
+
+    refresh(): void {
+        this.addonInfo = this.addonManager.getAddonInfo();
+        this._onDidChangeTreeData.fire(undefined);
     }
 }
 

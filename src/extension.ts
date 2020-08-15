@@ -20,9 +20,15 @@ export function activate(context: vscode.ExtensionContext) {
 
 	let createAddonCommand = vscode.commands.registerCommand('gmodsdk.createAddon', () => {
 		addonManager.create();
+		gmodAddonInfo.refresh();
 	});
-
 	context.subscriptions.push(createAddonCommand);
+
+
+	let refreshAddonInfoCommand = vscode.commands.registerCommand('gmodAddonInfo.refresh', () => {
+		gmodAddonInfo.refresh();
+	});
+	context.subscriptions.push(refreshAddonInfoCommand);
 }
 
 
