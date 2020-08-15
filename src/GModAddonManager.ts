@@ -4,7 +4,21 @@ import * as path from 'path';
 
 
 export class GModAddonManager {
-    constructor(private workspaceRoot: string | undefined) { }
+    constructor(private workspaceRoot: string | undefined, private samplesRoot: string) { }
+
+    getAddonInfo(): GModAddonInfo | undefined {
+        if (!this.workspaceRoot) {
+            return undefined;
+        }
+
+        const addonJSONPath = path.join(this.workspaceRoot, 'addon.json');
+        if (this.pathExists(addonJSONPath) == false) {
+            return undefined;
+        }
+
+        var addonInfo = <GModAddonInfo>JSON.parse(fs.readFileSync(addonJSONPath, 'utf8'))
+        return addonInfo;
+    }
 
     create(): void {
         if (!this.workspaceRoot) {
@@ -25,18 +39,35 @@ export class GModAddonManager {
         vscode.window.showInformationMessage('Created an empty GMod addon');
     }
 
-    getAddonInfo(): GModAddonInfo | undefined {
+    createSampleTTTWeapon(): void {
         if (!this.workspaceRoot) {
-            return undefined;
+            return;
         }
 
-        const addonJSONPath = path.join(this.workspaceRoot, 'addon.json');
-        if (this.pathExists(addonJSONPath) == false) {
-            return undefined;
+        const weaponsPath = path.join(this.workspaceRoot, 'lua', 'weapons');
+        if (this.pathExists(weaponsPath) == false) {
+            fs.mkdirSync(weaponsPath, { recursive: true });
         }
 
-        var addonInfo = <GModAddonInfo> JSON.parse(fs.readFileSync(addonJSONPath, 'utf8'))
-        return addonInfo;
+        var sampleWeaponPath = path.join(weaponsPath, 'weapon_ttt_sample.lua');
+        var uniqueNumber = 1;
+        while (this.pathExists(sampleWeaponPath)) {
+            sampleWeaponPath = path.join(weaponsPath, `weapon_ttt_sample${uniqueNumber++}.lua`);
+        }
+
+        var sampleWeaponTemplatePath = path.join(this.samplesRoot, 'weapon_ttt_sample.lua');
+        var sampleWeaponLua = fs.readFileSync(sampleWeaponTemplatePath, 'utf8')
+
+        fs.writeFileSync(sampleWeaponPath, sampleWeaponLua);
+
+        vscode.workspace
+            .openTextDocument(vscode.Uri.file(sampleWeaponPath))
+            .then((document: vscode.TextDocument) => {
+                vscode.window.showTextDocument(document, vscode.ViewColumn.Active, false).then(e => { });
+            }, (error: any) => {
+                console.error(error);
+                debugger;
+            });
     }
 
     private pathExists(p: string): boolean {

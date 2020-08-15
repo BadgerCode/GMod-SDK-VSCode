@@ -8,7 +8,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 
 	// DEPENDENCIES
-	var addonManager = new GModAddonManager(vscode.workspace.rootPath)
+	var addonManager = new GModAddonManager(vscode.workspace.rootPath, context.asAbsolutePath('resources/samples'))
 
 
 	// SIDE BAR
@@ -32,7 +32,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 
 	let createWeaponCommand = vscode.commands.registerCommand('gmodSDK.createWeapon', () => {
-		vscode.window.showInformationMessage('Create weapon');
+		addonManager.createSampleTTTWeapon();
 	});
 	context.subscriptions.push(createWeaponCommand);
 }
