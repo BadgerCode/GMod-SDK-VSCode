@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { GModAddonOverviewProvider } from './GModAddonOverviewProvider';
+import { GModAddonOverviewProvider, GModMenuItem } from './GModAddonOverviewProvider';
 import { GModAddonManager } from './GModAddonManager';
 
 
@@ -40,6 +40,12 @@ export function activate(context: vscode.ExtensionContext) {
 		addonManager.openEditor();
 	});
 	context.subscriptions.push(editAddonInfoCommand);
+
+	let editWeaponCommand = vscode.commands.registerCommand('gmodWeapon.edit', (item: GModMenuItem) => {
+		if (item.weapon == undefined) return;
+		addonManager.editWeapon(item.weapon.pathToFile);
+	});
+	context.subscriptions.push(editWeaponCommand);
 }
 
 

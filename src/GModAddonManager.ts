@@ -33,7 +33,7 @@ export class GModAddonManager {
 
         // TODO: Handle non-weapon files in the weapons directory
         return fs.readdirSync(weaponsPath)
-            .map(fileName => new GModWeapon(fileName.replace(".lua", "")));
+            .map(fileName => new GModWeapon(fileName.replace(".lua", ""), path.join(weaponsPath, fileName)));
     }
 
     create(): void {
@@ -66,6 +66,10 @@ export class GModAddonManager {
         }
 
         this.openFile(addonJSONPath);
+    }
+
+    editWeapon(weaponPath: string): void {
+        this.openFile(weaponPath);
     }
 
     createSampleTTTWeapon(): void {
@@ -176,12 +180,11 @@ enum AddonTag {
 
 export class GModWeapon {
     name: string;
+    pathToFile: string;
 
-    /**
-     *
-     */
-    constructor(name: string) {
+    constructor(name: string, pathToFile: string) {
         this.name = name;
+        this.pathToFile = pathToFile;
     }
 }
 

@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
-import { GModAddonManager, GModAddonInfo } from './GModAddonManager';
+import { GModAddonManager, GModAddonInfo, GModWeapon } from './GModAddonManager';
 
 export class GModAddonOverviewProvider implements vscode.TreeDataProvider<GModMenuItem> {
     private _onDidChangeTreeData: vscode.EventEmitter<GModMenuItem | undefined> = new vscode.EventEmitter<GModMenuItem | undefined>();
@@ -47,7 +47,11 @@ export class GModAddonOverviewProvider implements vscode.TreeDataProvider<GModMe
         }
         else if (element.id == "weapons") {
             return Promise.resolve(
-                this.addonManager.getWeapons().map((weapon, index) => new GModMenuItem(`weapons.${index}`, weapon.name, ""))
+                this.addonManager.getWeapons().map((weapon, index) => {
+                    var menuItem = new GModMenuItem(`weapons.${index}`, weapon.name, "");
+                    menuItem.weapon = weapon;
+                    return menuItem;
+                })
             );
         }
         else {
@@ -61,7 +65,9 @@ export class GModAddonOverviewProvider implements vscode.TreeDataProvider<GModMe
     }
 }
 
-class GModMenuItem extends vscode.TreeItem {
+export class GModMenuItem extends vscode.TreeItem {
+    weapon: GModWeapon | undefined;
+
     constructor(
         public readonly id: string,
         public readonly label: string,

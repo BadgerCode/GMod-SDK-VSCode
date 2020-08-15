@@ -46,6 +46,14 @@
 					"light": "resources/light/refresh.svg",
 					"dark": "resources/dark/refresh.svg"
 				}
+			},
+			{
+				"command": "gmodWeapon.edit",
+				"title": "Edit",
+				"icon": {
+					"light": "resources/light/edit.svg",
+					"dark": "resources/dark/edit.svg"
+				}
 			}
 		],
 		"menus": {
@@ -57,6 +65,10 @@
 				{
 					"command": "gmodAddonInfo.refresh",
 					"when": "view == gmodAddonInfo"
+				},
+				{
+					"command": "gmodWeapon.edit",
+					"when": "false"
 				}
 			],
 			"view/title": [
@@ -75,6 +87,11 @@
 				{
 					"command": "gmodSDK.createWeapon",
 					"when": "view == gmodAddonInfo && viewItem == weapons",
+					"group": "inline"
+				},
+				{
+					"command": "gmodWeapon.edit",
+					"when": "view == gmodAddonInfo && viewItem =~ /^weapons\\..*/",
 					"group": "inline"
 				}
 			]
