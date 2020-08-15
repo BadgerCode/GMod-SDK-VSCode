@@ -54,6 +54,10 @@
 					"light": "resources/light/edit.svg",
 					"dark": "resources/dark/edit.svg"
 				}
+			},
+			{
+				"command": "gmodSDK.test",
+				"title": "Test"
 			}
 		],
 		"menus": {
