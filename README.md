@@ -2,6 +2,9 @@
 
 A VS Code extension to make GMod addon development easier.
 
+# Resources
+* Icons from [Font Awesome](https://fontawesome.com/icons/list) and [VS Code Extension Examples](https://github.com/microsoft/vscode-extension-samples/)
+
 <br>
 <br>
 

@@ -32,6 +32,14 @@
 				}
 			},
 			{
+				"command": "gmodAddonInfo.edit",
+				"title": "Open addon.json",
+				"icon": {
+					"light": "resources/light/edit.svg",
+					"dark": "resources/dark/edit.svg"
+				}
+			},
+			{
 				"command": "gmodAddonInfo.refresh",
 				"title": "Refresh Garry's Mod Addon Information",
 				"icon": {
@@ -41,6 +49,16 @@
 			}
 		],
 		"menus": {
+			"commandPalette": [
+				{
+					"command": "gmodAddonInfo.edit",
+					"when": "view == gmodAddonInfo"
+				},
+				{
+					"command": "gmodAddonInfo.refresh",
+					"when": "view == gmodAddonInfo"
+				}
+			],
 			"view/title": [
 				{
 					"command": "gmodAddonInfo.refresh",
@@ -49,6 +67,11 @@
 				}
 			],
 			"view/item/context": [
+				{
+					"command": "gmodAddonInfo.edit",
+					"when": "view == gmodAddonInfo && viewItem =~ /^addoninfo.*/",
+					"group": "inline"
+				},
 				{
 					"command": "gmodSDK.createWeapon",
 					"when": "view == gmodAddonInfo && viewItem == weapons",

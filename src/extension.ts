@@ -24,17 +24,22 @@ export function activate(context: vscode.ExtensionContext) {
 	});
 	context.subscriptions.push(createAddonCommand);
 
+	let createWeaponCommand = vscode.commands.registerCommand('gmodSDK.createWeapon', () => {
+		addonManager.createSampleTTTWeapon();
+	});
+	context.subscriptions.push(createWeaponCommand);
 
+
+	// INTERNAL COMMANDS
 	let refreshAddonInfoCommand = vscode.commands.registerCommand('gmodAddonInfo.refresh', () => {
 		gmodAddonInfo.refresh();
 	});
 	context.subscriptions.push(refreshAddonInfoCommand);
 
-
-	let createWeaponCommand = vscode.commands.registerCommand('gmodSDK.createWeapon', () => {
-		addonManager.createSampleTTTWeapon();
+	let editAddonInfoCommand = vscode.commands.registerCommand('gmodAddonInfo.edit', () => {
+		addonManager.openEditor();
 	});
-	context.subscriptions.push(createWeaponCommand);
+	context.subscriptions.push(editAddonInfoCommand);
 }
 
 

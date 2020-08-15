@@ -39,6 +39,19 @@ export class GModAddonManager {
         vscode.window.showInformationMessage('Created an empty GMod addon');
     }
 
+    openEditor(): void {
+        if (!this.workspaceRoot) {
+            return;
+        }
+
+        const addonJSONPath = path.join(this.workspaceRoot, 'addon.json');
+        if (this.pathExists(addonJSONPath) == false) {
+            return undefined;
+        }
+
+        this.openFile(addonJSONPath);
+    }
+
     createSampleTTTWeapon(): void {
         if (!this.workspaceRoot) {
             return;
@@ -60,14 +73,7 @@ export class GModAddonManager {
 
         fs.writeFileSync(sampleWeaponPath, sampleWeaponLua);
 
-        vscode.workspace
-            .openTextDocument(vscode.Uri.file(sampleWeaponPath))
-            .then((document: vscode.TextDocument) => {
-                vscode.window.showTextDocument(document, vscode.ViewColumn.Active, false).then(e => { });
-            }, (error: any) => {
-                console.error(error);
-                debugger;
-            });
+        this.openFile(sampleWeaponPath);
     }
 
     private pathExists(p: string): boolean {
@@ -77,6 +83,17 @@ export class GModAddonManager {
             return false;
         }
         return true;
+    }
+
+    private openFile(filePath: string): void {
+        vscode.workspace
+            .openTextDocument(vscode.Uri.file(filePath))
+            .then((document: vscode.TextDocument) => {
+                vscode.window.showTextDocument(document, vscode.ViewColumn.Active, false).then(e => { });
+            }, (error: any) => {
+                console.error(error);
+                debugger;
+            });
     }
 }
 
