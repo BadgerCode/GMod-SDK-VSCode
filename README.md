@@ -29,7 +29,5 @@ From the root folder of this project, run
 
 ## Debugging
 * Open the project folder in VS Code and press `F5` to start debugging
-    * This will open a new instance of VS Code with this extension installed.
-* After changing a file inside `./src/`, reload the window
-    * Press `CTRL` + `SHIFT` + `P`
-    * Enter the command `Reload Window`
+    * This will open a new, `debug instance of VS Code` with this extension installed.
+    * Use `ctrl+r` to reload this window after making changes
