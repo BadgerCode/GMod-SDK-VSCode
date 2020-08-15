@@ -17,7 +17,6 @@ export function activate(context: vscode.ExtensionContext) {
 
 
 	// COMMANDS
-
 	let createAddonCommand = vscode.commands.registerCommand('gmodSDK.createAddon', () => {
 		addonManager.create();
 		gmodAddonInfo.refresh();
@@ -26,6 +25,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 	let createWeaponCommand = vscode.commands.registerCommand('gmodSDK.createWeapon', () => {
 		addonManager.createSampleTTTWeapon();
+		gmodAddonInfo.refresh();
 	});
 	context.subscriptions.push(createWeaponCommand);
 

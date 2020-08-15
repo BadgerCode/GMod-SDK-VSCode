@@ -20,6 +20,22 @@ export class GModAddonManager {
         return addonInfo;
     }
 
+    getWeapons(): GModWeapon[] {
+        if (!this.workspaceRoot)
+            return [];
+
+        // TODO: Check for weapons in gamemodes folder too
+
+        const weaponsPath = path.join(this.workspaceRoot, 'lua/weapons');
+        if (this.pathExists(weaponsPath) == false) {
+            return [];
+        }
+
+        // TODO: Handle non-weapon files in the weapons directory
+        return fs.readdirSync(weaponsPath)
+            .map(fileName => new GModWeapon(fileName.replace(".lua", "")));
+    }
+
     create(): void {
         if (!this.workspaceRoot) {
             vscode.window.showErrorMessage('Please open a folder before creating an addon.');
@@ -155,5 +171,17 @@ enum AddonTag {
     Water = "water",
     Comic = "comic",
     Build = "build"
+}
+
+
+export class GModWeapon {
+    name: string;
+
+    /**
+     *
+     */
+    constructor(name: string) {
+        this.name = name;
+    }
 }
 

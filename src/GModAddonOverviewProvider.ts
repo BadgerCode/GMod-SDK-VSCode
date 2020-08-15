@@ -23,7 +23,7 @@ export class GModAddonOverviewProvider implements vscode.TreeDataProvider<GModMe
         if (!element) {
             return Promise.resolve([
                 new GModMenuItem("addoninfo", "Addon Information", "", undefined, vscode.TreeItemCollapsibleState.Expanded),
-                new GModMenuItem("weapons", "Weapons", "", "folder.svg")
+                new GModMenuItem("weapons", "Weapons", "", "folder.svg", vscode.TreeItemCollapsibleState.Collapsed)
             ]);
         }
         else if (element.id == "addoninfo") {
@@ -43,6 +43,11 @@ export class GModAddonOverviewProvider implements vscode.TreeDataProvider<GModMe
         else if (element.id == "addoninfo.ignoredFiles") {
             return Promise.resolve(
                 this.addonInfo.ignore.map((filePath, index) => new GModMenuItem(`addoninfo.ignoredFiles.${index}`, filePath, ""))
+            );
+        }
+        else if (element.id == "weapons") {
+            return Promise.resolve(
+                this.addonManager.getWeapons().map((weapon, index) => new GModMenuItem(`weapons.${index}`, weapon.name, ""))
             );
         }
         else {
