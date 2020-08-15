@@ -20,8 +20,7 @@ export class GModAddonOverviewProvider implements vscode.TreeDataProvider<GModMe
         if (!element) {
             return Promise.resolve([
                 new GModMenuItem("addoninfo", "Addon Information", "", undefined, vscode.TreeItemCollapsibleState.Expanded),
-                new GModMenuItem("weapons", "Weapons", "", "folder.svg", vscode.TreeItemCollapsibleState.Collapsed),
-                new GModMenuItem("entities", "Entities", "", "folder.svg", vscode.TreeItemCollapsibleState.Collapsed)
+                new GModMenuItem("weapons", "Weapons", "", "folder.svg", vscode.TreeItemCollapsibleState.Collapsed)
             ]);
         }
         else if (element.id == "addoninfo") {
@@ -46,11 +45,6 @@ export class GModAddonOverviewProvider implements vscode.TreeDataProvider<GModMe
         else if(element.id == "weapons") {
             return Promise.resolve([
                 new GModMenuItem("weapons.new", "Create a new weapon...", "")
-            ]);
-        }
-        else if(element.id == "entities") {
-            return Promise.resolve([
-                new GModMenuItem("entities.new", "Create a new entity...", "")
             ]);
         }
         else {
