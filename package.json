@@ -13,9 +13,16 @@
 	],
 	"main": "./out/extension.js",
 	"activationEvents": [
+		"onCommand:gmodsdk.createAddon",
 		"onView:gmodMenuSideBar"
 	],
 	"contributes": {
+		"commands": [
+			{
+				"command": "gmodsdk.createAddon",
+				"title": "Create Garry's Mod Addon"
+			}
+		],
 		"views": {
 			"gmod-sdk": [
 				{
@@ -34,7 +41,13 @@
 					"icon": "./resources/menu-icon.svg"
 				}
 			]
-		}
+		},
+		"viewsWelcome": [
+			{
+				"view": "gmodMenuSideBar",
+				"contents": "You are not in a Garry's Mod addon folder.\n[Create addon](command:gmodsdk.createAddon)"
+			}
+		]
 	},
 	"scripts": {
 		"vscode:prepublish": "npm run compile",
