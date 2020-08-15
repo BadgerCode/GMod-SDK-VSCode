@@ -43,6 +43,19 @@ export class GModAddonOverviewProvider implements vscode.TreeDataProvider<GModMe
                 this.addonInfo.ignore.map((filePath, index) => new GModMenuItem(`addoninfo.ignoredFiles.${index}`, filePath, ""))
             );
         }
+        else if(element.id == "weapons") {
+            return Promise.resolve([
+                new GModMenuItem("weapons.new", "Create a new weapon...", "")
+            ]);
+        }
+        else if(element.id == "entities") {
+            return Promise.resolve([
+                new GModMenuItem("entities.new", "Create a new entity...", "")
+            ]);
+        }
+        else {
+            return Promise.resolve([]);
+        }
     }
 }
 
