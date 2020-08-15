@@ -23,7 +23,7 @@ export class GModAddonOverviewProvider implements vscode.TreeDataProvider<GModMe
         if (!element) {
             return Promise.resolve([
                 new GModMenuItem("addoninfo", "Addon Information", "", undefined, vscode.TreeItemCollapsibleState.Expanded),
-                new GModMenuItem("weapons", "Weapons", "", "folder.svg", vscode.TreeItemCollapsibleState.Collapsed)
+                new GModMenuItem("weapons", "Weapons", "", "folder.svg")
             ]);
         }
         else if (element.id == "addoninfo") {
@@ -44,11 +44,6 @@ export class GModAddonOverviewProvider implements vscode.TreeDataProvider<GModMe
             return Promise.resolve(
                 this.addonInfo.ignore.map((filePath, index) => new GModMenuItem(`addoninfo.ignoredFiles.${index}`, filePath, ""))
             );
-        }
-        else if(element.id == "weapons") {
-            return Promise.resolve([
-                new GModMenuItem("weapons.new", "Create a new weapon...", "")
-            ]);
         }
         else {
             return Promise.resolve([]);
@@ -77,6 +72,8 @@ class GModMenuItem extends vscode.TreeItem {
                 dark: path.join(__filename, '..', '..', 'resources', 'dark', iconName)
             };
         }
+
+        this.contextValue = id;
     }
 
     get tooltip(): string {

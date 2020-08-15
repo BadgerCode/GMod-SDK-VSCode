@@ -13,14 +13,23 @@
 	],
 	"main": "./out/extension.js",
 	"activationEvents": [
-		"onCommand:gmodsdk.createAddon",
+		"onCommand:gmodSDK.createAddon",
+		"onCommand:gmodSDK.createWeapon",
 		"onView:gmodAddonInfo"
 	],
 	"contributes": {
 		"commands": [
 			{
-				"command": "gmodsdk.createAddon",
+				"command": "gmodSDK.createAddon",
 				"title": "Create Garry's Mod Addon"
+			},
+			{
+				"command": "gmodSDK.createWeapon",
+				"title": "Create Weapon",
+				"icon": {
+					"light": "resources/light/create.svg",
+					"dark": "resources/dark/create.svg"
+				}
 			},
 			{
 				"command": "gmodAddonInfo.refresh",
@@ -38,6 +47,13 @@
 					"when": "view == gmodAddonInfo",
 					"group": "navigation"
 				}
+			],
+			"view/item/context": [
+				{
+					"command": "gmodSDK.createWeapon",
+					"when": "view == gmodAddonInfo && viewItem == weapons",
+					"group": "inline"
+				}
 			]
 		},
 		"views": {
@@ -53,7 +69,7 @@
 		"viewsWelcome": [
 			{
 				"view": "gmodAddonInfo",
-				"contents": "You are not in a Garry's Mod addon folder.\n[Create addon](command:gmodsdk.createAddon)"
+				"contents": "You are not in a Garry's Mod addon folder.\n[Create addon](command:gmodSDK.createAddon)"
 			}
 		],
 		"viewsContainers": {

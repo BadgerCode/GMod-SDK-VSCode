@@ -4,7 +4,7 @@ import { GModAddonManager } from './GModAddonManager';
 
 
 export function activate(context: vscode.ExtensionContext) {
-	console.log('Congratulations, your extension "gmod-sdk" is now active!');
+	console.log('Loading extension "gmod-sdk"');
 
 
 	// DEPENDENCIES
@@ -18,7 +18,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 	// COMMANDS
 
-	let createAddonCommand = vscode.commands.registerCommand('gmodsdk.createAddon', () => {
+	let createAddonCommand = vscode.commands.registerCommand('gmodSDK.createAddon', () => {
 		addonManager.create();
 		gmodAddonInfo.refresh();
 	});
@@ -29,6 +29,12 @@ export function activate(context: vscode.ExtensionContext) {
 		gmodAddonInfo.refresh();
 	});
 	context.subscriptions.push(refreshAddonInfoCommand);
+
+
+	let createWeaponCommand = vscode.commands.registerCommand('gmodSDK.createWeapon', () => {
+		vscode.window.showInformationMessage('Create weapon');
+	});
+	context.subscriptions.push(createWeaponCommand);
 }
 
 
