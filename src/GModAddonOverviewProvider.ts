@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 import { GModAddonManager, GModAddonInfo } from './GModAddonManager';
 
-export class GModMenuProvider implements vscode.TreeDataProvider<GModMenuItem> {
+export class GModAddonOverviewProvider implements vscode.TreeDataProvider<GModMenuItem> {
     private addonInfo: GModAddonInfo | undefined;
 
     constructor(private addonManager: GModAddonManager) {

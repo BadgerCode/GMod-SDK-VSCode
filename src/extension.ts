@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { GModMenuProvider } from './GModMenuProvider';
+import { GModAddonOverviewProvider } from './GModAddonOverviewProvider';
 import { GModAddonManager } from './GModAddonManager';
 
 
@@ -12,8 +12,8 @@ export function activate(context: vscode.ExtensionContext) {
 
 
 	// SIDE BAR
-	const gmodMenuProvider = new GModMenuProvider(addonManager);
-	vscode.window.registerTreeDataProvider('gmodMenuSideBar', gmodMenuProvider);
+	const gmodAddonInfo = new GModAddonOverviewProvider(addonManager);
+	vscode.window.registerTreeDataProvider('gmodAddonInfo', gmodAddonInfo);
 
 
 	// COMMANDS
