@@ -16,7 +16,8 @@
 		"onCommand:gmodSDK.createAddon",
 		"onCommand:gmodSDK.createWeapon",
 		"onView:gmodAddonInfo",
-		"onView:gmodAddonWeapons"
+		"onView:gmodAddonWeapons",
+		"onView:gmodAddonWorkshop"
 	],
 	"contributes": {
 		"commands": [
@@ -42,7 +43,7 @@
 			},
 			{
 				"command": "gmodAddonInfo.refresh",
-				"title": "Refresh Garry's Mod Addon Information",
+				"title": "Refresh",
 				"icon": {
 					"light": "resources/light/refresh.svg",
 					"dark": "resources/dark/refresh.svg"
@@ -79,7 +80,7 @@
 			"view/title": [
 				{
 					"command": "gmodAddonInfo.refresh",
-					"when": "view == gmodAddonInfo || view == gmodAddonWeapons",
+					"when": "view == gmodAddonInfo || view == gmodAddonWeapons || view == gmodAddonWorkshop",
 					"group": "navigation"
 				},
 				{
@@ -114,6 +115,12 @@
 					"name": "Weapons",
 					"icon": "./resources/menu-icon.svg",
 					"contextualTitle": "Addon Weapons"
+				},
+				{
+					"id": "gmodAddonWorkshop",
+					"name": "Workshop",
+					"icon": "./resources/menu-icon.svg",
+					"contextualTitle": "Garry's Mod Workshop"
 				}
 			]
 		},

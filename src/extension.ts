@@ -3,6 +3,7 @@ import { GModAddonInfoView, GModMenuItem } from './GModAddonInfoView';
 import { GModAddonManager } from './GModAddonManager';
 import { GModAddonWeaponsView, GModWeaponMenuItem } from './GModAddonWeaponsView';
 import { GModWeaponManager } from './GModWeaponManager';
+import { GModWorkshopView } from './GModWorkshopView';
 
 
 export function activate(context: vscode.ExtensionContext) {
@@ -20,6 +21,9 @@ export function activate(context: vscode.ExtensionContext) {
 
 	const gmodAddonWeaponView = new GModAddonWeaponsView(weaponManager);
 	vscode.window.registerTreeDataProvider('gmodAddonWeapons', gmodAddonWeaponView);
+
+	const gmodWorkshopView = new GModWorkshopView();
+	vscode.window.registerTreeDataProvider('gmodAddonWorkshop', gmodWorkshopView);
 
 
 	// COMMANDS
@@ -55,6 +59,7 @@ export function activate(context: vscode.ExtensionContext) {
 	let refreshAddonInfoCommand = vscode.commands.registerCommand('gmodAddonInfo.refresh', () => {
 		gmodAddonInfoView.refresh();
 		gmodAddonWeaponView.refresh();
+		gmodWorkshopView.refresh();
 	});
 	context.subscriptions.push(refreshAddonInfoCommand);
 
