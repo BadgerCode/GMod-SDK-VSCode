@@ -1,8 +1,8 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
-import { GModAddonManager, GModAddonInfo, GModWeapon } from './GModAddonManager';
+import { GModAddonManager, GModAddonInfo } from './GModAddonManager';
 
-export class GModAddonOverviewProvider implements vscode.TreeDataProvider<GModMenuItem> {
+export class GModAddonInfoView implements vscode.TreeDataProvider<GModMenuItem> {
     private _onDidChangeTreeData: vscode.EventEmitter<GModMenuItem | undefined> = new vscode.EventEmitter<GModMenuItem | undefined>();
     readonly onDidChangeTreeData: vscode.Event<GModMenuItem | undefined> = this._onDidChangeTreeData.event;
 
@@ -22,36 +22,21 @@ export class GModAddonOverviewProvider implements vscode.TreeDataProvider<GModMe
 
         if (!element) {
             return Promise.resolve([
-                new GModMenuItem("addoninfo", "Addon Information", "", undefined, vscode.TreeItemCollapsibleState.Expanded),
-                new GModMenuItem("weapons", "Weapons", "", "folder.svg", vscode.TreeItemCollapsibleState.Collapsed)
+                new GModMenuItem("title", "Title", this.addonInfo.title),
+                new GModMenuItem("description", "Description", this.addonInfo.description),
+                new GModMenuItem("type", "Type", this.addonInfo.type),
+                new GModMenuItem("tags", "Tags", "", undefined, vscode.TreeItemCollapsibleState.Expanded),
+                new GModMenuItem("ignoredFiles", "Ignored files", "", undefined, vscode.TreeItemCollapsibleState.Collapsed)
             ]);
         }
-        else if (element.id == "addoninfo") {
-            return Promise.resolve([
-                new GModMenuItem("addoninfo.title", "Title", this.addonInfo.title),
-                new GModMenuItem("addoninfo.description", "Description", this.addonInfo.description),
-                new GModMenuItem("addoninfo.type", "Type", this.addonInfo.type),
-                new GModMenuItem("addoninfo.tags", "Tags", "", undefined, vscode.TreeItemCollapsibleState.Expanded),
-                new GModMenuItem("addoninfo.ignoredFiles", "Ignored files", "", undefined, vscode.TreeItemCollapsibleState.Collapsed)
-            ]);
-        }
-        else if (element.id == "addoninfo.tags") {
+        else if (element.id == "tags") {
             return Promise.resolve(
-                this.addonInfo.tags.map((tag, index) => new GModMenuItem(`addoninfo.tags.${index}`, tag, ""))
+                this.addonInfo.tags.map((tag, index) => new GModMenuItem(`tags.${index}`, tag, ""))
             );
         }
-        else if (element.id == "addoninfo.ignoredFiles") {
+        else if (element.id == "ignoredFiles") {
             return Promise.resolve(
-                this.addonInfo.ignore.map((filePath, index) => new GModMenuItem(`addoninfo.ignoredFiles.${index}`, filePath, ""))
-            );
-        }
-        else if (element.id == "weapons") {
-            return Promise.resolve(
-                this.addonManager.getWeapons().map((weapon, index) => {
-                    var menuItem = new GModMenuItem(`weapons.${index}`, weapon.name, "");
-                    menuItem.weapon = weapon;
-                    return menuItem;
-                })
+                this.addonInfo.ignore.map((filePath, index) => new GModMenuItem(`ignoredFiles.${index}`, filePath, ""))
             );
         }
         else {
@@ -66,8 +51,6 @@ export class GModAddonOverviewProvider implements vscode.TreeDataProvider<GModMe
 }
 
 export class GModMenuItem extends vscode.TreeItem {
-    weapon: GModWeapon | undefined;
-
     constructor(
         public readonly id: string,
         public readonly label: string,

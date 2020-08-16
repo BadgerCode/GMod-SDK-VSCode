@@ -1,6 +1,8 @@
 import * as vscode from 'vscode';
-import { GModAddonOverviewProvider, GModMenuItem } from './GModAddonOverviewProvider';
+import { GModAddonInfoView, GModMenuItem } from './GModAddonInfoView';
 import { GModAddonManager } from './GModAddonManager';
+import { GModAddonWeaponsView, GModWeaponMenuItem } from './GModAddonWeaponsView';
+import { GModWeaponManager } from './GModWeaponManager';
 
 
 export function activate(context: vscode.ExtensionContext) {
@@ -8,24 +10,28 @@ export function activate(context: vscode.ExtensionContext) {
 
 
 	// DEPENDENCIES
-	var addonManager = new GModAddonManager(vscode.workspace.rootPath, context.asAbsolutePath('resources/samples'))
+	var addonManager = new GModAddonManager(vscode.workspace.rootPath);
+	var weaponManager = new GModWeaponManager(vscode.workspace.rootPath, context.asAbsolutePath('resources/samples'));
 
 
 	// SIDE BAR
-	const gmodAddonInfo = new GModAddonOverviewProvider(addonManager);
-	vscode.window.registerTreeDataProvider('gmodAddonInfo', gmodAddonInfo);
+	const gmodAddonInfoView = new GModAddonInfoView(addonManager);
+	vscode.window.registerTreeDataProvider('gmodAddonInfo', gmodAddonInfoView);
+
+	const gmodAddonWeaponView = new GModAddonWeaponsView(weaponManager);
+	vscode.window.registerTreeDataProvider('gmodAddonWeapons', gmodAddonWeaponView);
 
 
 	// COMMANDS
 	let createAddonCommand = vscode.commands.registerCommand('gmodSDK.createAddon', () => {
 		addonManager.create();
-		gmodAddonInfo.refresh();
+		gmodAddonInfoView.refresh();
 	});
 	context.subscriptions.push(createAddonCommand);
 
 	let createWeaponCommand = vscode.commands.registerCommand('gmodSDK.createWeapon', () => {
-		addonManager.createSampleTTTWeapon();
-		gmodAddonInfo.refresh();
+		weaponManager.createSampleTTTWeapon();
+		gmodAddonWeaponView.refresh();
 	});
 	context.subscriptions.push(createWeaponCommand);
 
@@ -47,7 +53,8 @@ export function activate(context: vscode.ExtensionContext) {
 
 	// INTERNAL COMMANDS
 	let refreshAddonInfoCommand = vscode.commands.registerCommand('gmodAddonInfo.refresh', () => {
-		gmodAddonInfo.refresh();
+		gmodAddonInfoView.refresh();
+		gmodAddonWeaponView.refresh();
 	});
 	context.subscriptions.push(refreshAddonInfoCommand);
 
@@ -56,9 +63,9 @@ export function activate(context: vscode.ExtensionContext) {
 	});
 	context.subscriptions.push(editAddonInfoCommand);
 
-	let editWeaponCommand = vscode.commands.registerCommand('gmodWeapon.edit', (item: GModMenuItem) => {
+	let editWeaponCommand = vscode.commands.registerCommand('gmodWeapon.edit', (item: GModWeaponMenuItem) => {
 		if (item.weapon == undefined) return;
-		addonManager.editWeapon(item.weapon.pathToFile);
+		weaponManager.editWeapon(item.weapon.pathToFile);
 	});
 	context.subscriptions.push(editWeaponCommand);
 }

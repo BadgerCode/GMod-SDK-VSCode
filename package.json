@@ -15,7 +15,8 @@
 	"activationEvents": [
 		"onCommand:gmodSDK.createAddon",
 		"onCommand:gmodSDK.createWeapon",
-		"onView:gmodAddonInfo"
+		"onView:gmodAddonInfo",
+		"onView:gmodAddonWeapons"
 	],
 	"contributes": {
 		"commands": [
@@ -68,7 +69,7 @@
 				},
 				{
 					"command": "gmodAddonInfo.refresh",
-					"when": "view == gmodAddonInfo"
+					"when": "false"
 				},
 				{
 					"command": "gmodWeapon.edit",
@@ -78,24 +79,24 @@
 			"view/title": [
 				{
 					"command": "gmodAddonInfo.refresh",
-					"when": "view == gmodAddonInfo",
+					"when": "view == gmodAddonInfo || view == gmodAddonWeapons",
+					"group": "navigation"
+				},
+				{
+					"command": "gmodSDK.createWeapon",
+					"when": "view == gmodAddonWeapons",
 					"group": "navigation"
 				}
 			],
 			"view/item/context": [
 				{
 					"command": "gmodAddonInfo.edit",
-					"when": "view == gmodAddonInfo && viewItem =~ /^addoninfo.*/",
-					"group": "inline"
-				},
-				{
-					"command": "gmodSDK.createWeapon",
-					"when": "view == gmodAddonInfo && viewItem == weapons",
+					"when": "view == gmodAddonInfo",
 					"group": "inline"
 				},
 				{
 					"command": "gmodWeapon.edit",
-					"when": "view == gmodAddonInfo && viewItem =~ /^weapons\\..*/",
+					"when": "view == gmodAddonWeapons && viewItem =~ /^weapons\\..*/",
 					"group": "inline"
 				}
 			]
@@ -107,13 +108,19 @@
 					"name": "Addon Overview",
 					"icon": "./resources/menu-icon.svg",
 					"contextualTitle": "Addon Information"
+				},
+				{
+					"id": "gmodAddonWeapons",
+					"name": "Weapons",
+					"icon": "./resources/menu-icon.svg",
+					"contextualTitle": "Addon Weapons"
 				}
 			]
 		},
 		"viewsWelcome": [
 			{
 				"view": "gmodAddonInfo",
-				"contents": "You are not in a Garry's Mod addon folder.\n[Create addon](command:gmodSDK.createAddon)"
+				"contents": "You are not in a Garry's Mod addon folder.\n(Could not find addon.json)\n[Create addon](command:gmodSDK.createAddon)"
 			}
 		],
 		"viewsContainers": {
