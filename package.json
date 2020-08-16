@@ -20,6 +20,21 @@
 		"onView:gmodWorkshop"
 	],
 	"contributes": {
+		"configuration": {
+			"title": "GMod SDK",
+			"properties": {
+				"gmod.gmadExecutablePath": {
+					"type": "string",
+					"markdownDescription": "The path to the **gmad** program, found in your Garry's Mod bin folder.\n\nFor example: `C:\\Program Files (x86)\\Steam\\steamapps\\common\\garrysmod\\bin\\gmad.exe`\n\n[How to find your Garry's Mod Folder](https://gist.github.com/BadgerCode/00600eab40556c6e8809590d263ea053)",
+					"default": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\garrysmod\\bin\\gmad.exe"
+				},
+				"gmod.gmpublishExecutablePath": {
+					"type": "string",
+					"markdownDescription":"The path to the **gmpublish** program, found in your Garry's Mod bin folder.\n\nFor example: `C:\\Program Files (x86)\\Steam\\steamapps\\common\\garrysmod\\bin\\gmad.exe`\n\n[How to find your Garry's Mod Folder](https://gist.github.com/BadgerCode/00600eab40556c6e8809590d263ea053)",
+					"default": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\garrysmod\\bin\\gmpublish.exe"
+				}
+			}
+		},
 		"commands": [
 			{
 				"command": "gmodSDK.createAddon",

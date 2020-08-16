@@ -1,13 +1,35 @@
 import * as vscode from 'vscode';
+import * as fs from 'fs';
 import * as path from 'path';
 
 export class GModWorkshopManager {
     private static DEBUGMODE: boolean = false;
 
-    // TODO: Handle custom GMod folder locations & executable names
-    private gmodFolderPath: string = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\garrysmod";
-    private gmadExecutableName: string = "gmad.exe";
-    private gmpublishExecutableName: string = "gmpublish.exe";
+    private get gmadExecutablePath(): string {
+        var path = vscode.workspace.getConfiguration('gmod')
+            .get<string>("gmadExecutablePath");
+
+        if (path == undefined || !this.pathExists(path)) {
+            var errorMessage = `Unable to find gmad program. To fix this, Open Settings, search for gmod.gmadExecutablePath and follow the instructions.`;
+            vscode.window.showErrorMessage(errorMessage)
+            throw errorMessage;
+        }
+
+        return path;
+    }
+
+    private get gmpublishExecutablePath(): string {
+        var path = vscode.workspace.getConfiguration('gmod')
+            .get<string>("gmpublishExecutablePath");
+
+        if (path == undefined || !this.pathExists(path)) {
+            var errorMessage = `Unable to find gmad program. To fix this, Open Settings, search for gmod.gmpublishExecutablePath and follow the instructions.`;
+            vscode.window.showErrorMessage(errorMessage)
+            throw errorMessage;
+        }
+
+        return path;
+    }
 
     constructor(private workspacePath: string | undefined, private samplesRoot: string) { }
 
@@ -25,14 +47,15 @@ export class GModWorkshopManager {
             return;
         }
 
+        var gmadPath = this.gmadExecutablePath;
+        var gmpublishPath = this.gmpublishExecutablePath;
+
         // TODO: Re-use terminal if exists/cleanup terminal on exit
         var terminal = vscode.window.createTerminal("GMod Publish");
         terminal.show();
 
-        var gmadPath = path.join(this.gmodFolderPath, "bin", this.gmadExecutableName);
         terminal.sendText(`& "${gmadPath}" create -folder "${this.workspacePath}" -out "${gmaPath}" -warninvalid`);
 
-        var gmpublishPath = path.join(this.gmodFolderPath, "bin", this.gmpublishExecutableName);
         terminal.sendText(`& "${gmpublishPath}" create -addon "${gmaPath}" -icon "${thumbnailPath}"`);
 
         // TODO: Wait for terminal to finish processing commands and delete the .gma file
@@ -52,13 +75,14 @@ export class GModWorkshopManager {
             return;
         }
 
+        var gmadPath = this.gmadExecutablePath;
+        var gmpublishPath = this.gmpublishExecutablePath;
+
         var terminal = vscode.window.createTerminal("GMod Publish");
         terminal.show();
 
-        var gmadPath = path.join(this.gmodFolderPath, "bin", this.gmadExecutableName);
         terminal.sendText(`& "${gmadPath}" create -folder "${this.workspacePath}" -out "${gmaPath}" -warninvalid`);
 
-        var gmpublishPath = path.join(this.gmodFolderPath, "bin", this.gmpublishExecutableName);
         terminal.sendText(`& "${gmpublishPath}" update -id ${fileID} -addon "${gmaPath}"`);
 
         // TODO: Wait for terminal to finish processing commands and delete the .gma file
@@ -71,13 +95,22 @@ export class GModWorkshopManager {
             return;
         }
 
+        var gmpublishPath = this.gmpublishExecutablePath;
 
         var terminal = vscode.window.createTerminal("GMod Publish");
         terminal.show();
 
-        var gmpublishPath = path.join(this.gmodFolderPath, "bin", this.gmpublishExecutableName);
         terminal.sendText(`& "${gmpublishPath}" update -id ${fileID} -icon "${thumbnailPath}"`);
 
         // TODO: Wait for terminal to finish processing commands and delete the .gma file
+    }
+
+    private pathExists(p: string): boolean {
+        try {
+            fs.accessSync(p);
+        } catch (err) {
+            return false;
+        }
+        return true;
     }
 }

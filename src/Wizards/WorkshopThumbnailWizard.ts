@@ -15,10 +15,8 @@ export class WorkshopThumbnailWizard {
                 'Images': ['jpg']
             }
         }).then(uri => {
-            if (uri == undefined) {
-                vscode.window.showInformationMessage(`You cancelled the thumbnail upload`);
+            if (uri == undefined)
                 return;
-            }
 
             var thumbnailPath = uri[0].fsPath;
             if (this.pathExists(thumbnailPath) == false) {
@@ -28,8 +26,10 @@ export class WorkshopThumbnailWizard {
 
             vscode.window.showInputBox({ prompt: "Enter the workshop file ID. This can be found at the end of the URL. E.g. https://steamcommunity.com/sharedfiles/filedetails/?id=2086515808 has a file ID of 2086515808" })
                 .then(fileID => {
-                    if (fileID == undefined)
+                    if (fileID == undefined) {
+                        vscode.window.showInformationMessage(`You cancelled the thumbnail upload`);
                         return;
+                    }
 
                     var trimmedFileID = fileID.trim();
                     if (isNaN(Number(trimmedFileID))) {
