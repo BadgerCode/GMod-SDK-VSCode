@@ -5,11 +5,11 @@ import { GModAddonWeaponsView, GModWeaponMenuItem } from './GModAddonWeaponsView
 import { GModWeaponManager } from './GModWeaponManager';
 import { GModWorkshopView } from './GModWorkshopView';
 import { GModWorkshopManager } from './GModWorkshopManager';
+import { WorkshopUploadWizard } from './Wizards/WorkshopUploadWizard';
 
 
 export function activate(context: vscode.ExtensionContext) {
 	console.log('Loading extension "gmod-sdk"');
-
 
 	// DEPENDENCIES
 	var addonManager = new GModAddonManager(vscode.workspace.rootPath);
@@ -52,49 +52,7 @@ export function activate(context: vscode.ExtensionContext) {
 			return;
 		}
 
-		vscode.window
-			.showQuickPick(["NEW", "Existing Addon"], { placeHolder: "Upload a new addon or update an existing addon?" })
-			.then(response => {
-				if (response == undefined)
-					return;
-
-				var shouldUploadNewAddon = response == "NEW";
-				if (shouldUploadNewAddon) {
-					vscode.window.showInputBox({ prompt: "This will upload a NEW addon to the workshop. Type YES to continue", placeHolder: "YES" })
-						.then(confirmation => {
-							if (confirmation == undefined || confirmation.toLowerCase().trim() != "yes") {
-								vscode.window.showInformationMessage(`You cancelled the workshop upload`);
-								return;
-							}
-							workshopManager.upload();
-						});
-				}
-				else {
-					vscode.window.showInputBox({ prompt: "Enter the workshop file ID. This can be found at the end of the URL. E.g. https://steamcommunity.com/sharedfiles/filedetails/?id=2086515808 has a file ID of 2086515808" })
-						.then(fileID => {
-							if (fileID == undefined) {
-								vscode.window.showInformationMessage(`You cancelled the workshop upload`);
-								return;
-							}
-
-							var trimmedFileID = fileID.trim();
-							if (isNaN(Number(trimmedFileID))) {
-								vscode.window.showInformationMessage(`"${trimmedFileID}" is not a valid workshop File ID. E.g. https://steamcommunity.com/sharedfiles/filedetails/?id=2086515808 has a file ID of 2086515808`);
-								return;
-							}
-
-							vscode.window.showInputBox({ prompt: `This will UPDATE the addon ${trimmedFileID}. Type YES to continue`, placeHolder: "YES" })
-								.then(confirmation => {
-									if (confirmation == undefined || confirmation.toLowerCase().trim() != "yes") {
-										vscode.window.showInformationMessage(`You cancelled the workshop upload`);
-										return;
-									}
-
-									workshopManager.updateAddon(trimmedFileID);
-								});
-						});
-				}
-			});
+		new WorkshopUploadWizard(workshopManager).show();
 	});
 	context.subscriptions.push(uploadWorkshopCommand);
 
