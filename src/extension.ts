@@ -1,9 +1,10 @@
 import * as vscode from 'vscode';
-import { GModAddonInfoView, GModMenuItem } from './GModAddonInfoView';
+import { GModAddonInfoView } from './GModAddonInfoView';
 import { GModAddonManager } from './GModAddonManager';
 import { GModAddonWeaponsView, GModWeaponMenuItem } from './GModAddonWeaponsView';
 import { GModWeaponManager } from './GModWeaponManager';
 import { GModWorkshopView } from './GModWorkshopView';
+import { GModWorkshopManager } from './GModWorkshopManager';
 
 
 export function activate(context: vscode.ExtensionContext) {
@@ -13,6 +14,7 @@ export function activate(context: vscode.ExtensionContext) {
 	// DEPENDENCIES
 	var addonManager = new GModAddonManager(vscode.workspace.rootPath);
 	var weaponManager = new GModWeaponManager(vscode.workspace.rootPath, context.asAbsolutePath('resources/samples'));
+	var workshopManager = new GModWorkshopManager(vscode.workspace.rootPath, context.asAbsolutePath('resources/samples'));
 
 
 	// SIDE BAR
@@ -50,7 +52,7 @@ export function activate(context: vscode.ExtensionContext) {
 			return;
 		}
 
-		vscode.window.showInformationMessage("Uploading")
+		workshopManager.upload();
 	});
 	context.subscriptions.push(uploadWorkshopCommand);
 
