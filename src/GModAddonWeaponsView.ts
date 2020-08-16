@@ -16,34 +16,6 @@ export class GModAddonWeaponsView implements vscode.TreeDataProvider<GModWeaponM
         if (!element) {
             return Promise.resolve(this.addonManager.getWeapons().map((weapon, index) => GModWeaponMenuItem.CreateWeaponItem(weapon)));
         }
-        // else if (element.id == "addoninfo") {
-        //     return Promise.resolve([
-        //         new GModMenuItem("addoninfo.title", "Title", this.addonInfo.title),
-        //         new GModMenuItem("addoninfo.description", "Description", this.addonInfo.description),
-        //         new GModMenuItem("addoninfo.type", "Type", this.addonInfo.type),
-        //         new GModMenuItem("addoninfo.tags", "Tags", "", undefined, vscode.TreeItemCollapsibleState.Expanded),
-        //         new GModMenuItem("addoninfo.ignoredFiles", "Ignored files", "", undefined, vscode.TreeItemCollapsibleState.Collapsed)
-        //     ]);
-        // }
-        // else if (element.id == "addoninfo.tags") {
-        //     return Promise.resolve(
-        //         this.addonInfo.tags.map((tag, index) => new GModMenuItem(`addoninfo.tags.${index}`, tag, ""))
-        //     );
-        // }
-        // else if (element.id == "addoninfo.ignoredFiles") {
-        //     return Promise.resolve(
-        //         this.addonInfo.ignore.map((filePath, index) => new GModMenuItem(`addoninfo.ignoredFiles.${index}`, filePath, ""))
-        //     );
-        // }
-        // else if (element.id == "weapons") {
-        //     return Promise.resolve(
-        //         this.addonManager.getWeapons().map((weapon, index) => {
-        //             var menuItem = new GModMenuItem(`weapons.${index}`, weapon.name, "");
-        //             menuItem.weapon = weapon;
-        //             return menuItem;
-        //         })
-        //     );
-        // }
         else {
             return Promise.resolve([]);
         }

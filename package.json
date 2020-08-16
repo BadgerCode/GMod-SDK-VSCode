@@ -17,7 +17,7 @@
 		"onCommand:gmodSDK.createWeapon",
 		"onView:gmodAddonInfo",
 		"onView:gmodAddonWeapons",
-		"onView:gmodAddonWorkshop"
+		"onView:gmodWorkshop"
 	],
 	"contributes": {
 		"commands": [
@@ -31,6 +31,14 @@
 				"icon": {
 					"light": "resources/light/create.svg",
 					"dark": "resources/dark/create.svg"
+				}
+			},
+			{
+				"command": "gmodSDK.uploadAddon",
+				"title": "Upload addon to workshop",
+				"icon": {
+					"light": "resources/light/upload.svg",
+					"dark": "resources/dark/upload.svg"
 				}
 			},
 			{
@@ -80,7 +88,7 @@
 			"view/title": [
 				{
 					"command": "gmodAddonInfo.refresh",
-					"when": "view == gmodAddonInfo || view == gmodAddonWeapons || view == gmodAddonWorkshop",
+					"when": "view == gmodAddonInfo || view == gmodAddonWeapons || view == gmodWorkshop",
 					"group": "navigation"
 				},
 				{
@@ -91,6 +99,11 @@
 				{
 					"command": "gmodSDK.createWeapon",
 					"when": "view == gmodAddonWeapons",
+					"group": "navigation"
+				},
+				{
+					"command": "gmodSDK.uploadAddon",
+					"when": "view == gmodWorkshop",
 					"group": "navigation"
 				}
 			],
@@ -117,7 +130,7 @@
 					"contextualTitle": "Addon Weapons"
 				},
 				{
-					"id": "gmodAddonWorkshop",
+					"id": "gmodWorkshop",
 					"name": "Workshop",
 					"icon": "./resources/menu-icon.svg",
 					"contextualTitle": "Garry's Mod Workshop"

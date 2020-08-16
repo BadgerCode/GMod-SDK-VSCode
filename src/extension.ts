@@ -23,7 +23,7 @@ export function activate(context: vscode.ExtensionContext) {
 	vscode.window.registerTreeDataProvider('gmodAddonWeapons', gmodAddonWeaponView);
 
 	const gmodWorkshopView = new GModWorkshopView();
-	vscode.window.registerTreeDataProvider('gmodAddonWorkshop', gmodWorkshopView);
+	vscode.window.registerTreeDataProvider('gmodWorkshop', gmodWorkshopView);
 
 
 	// COMMANDS
@@ -34,10 +34,25 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(createAddonCommand);
 
 	let createWeaponCommand = vscode.commands.registerCommand('gmodSDK.createWeapon', () => {
+		if (vscode.workspace.rootPath == undefined) {
+			vscode.window.showInformationMessage("Please open a folder.")
+			return;
+		}
+
 		weaponManager.createSampleTTTWeapon();
 		gmodAddonWeaponView.refresh();
 	});
 	context.subscriptions.push(createWeaponCommand);
+
+	let uploadWorkshopCommand = vscode.commands.registerCommand('gmodSDK.uploadAddon', () => {
+		if (addonManager.getAddonInfo() == undefined) {
+			vscode.window.showInformationMessage("addon.json missing. Please create an addon first.")
+			return;
+		}
+
+		vscode.window.showInformationMessage("Uploading")
+	});
+	context.subscriptions.push(uploadWorkshopCommand);
 
 
 
