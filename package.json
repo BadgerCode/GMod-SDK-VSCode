@@ -84,17 +84,17 @@
 					"group": "navigation"
 				},
 				{
+					"command": "gmodAddonInfo.edit",
+					"when": "view == gmodAddonInfo",
+					"group": "navigation"
+				},
+				{
 					"command": "gmodSDK.createWeapon",
 					"when": "view == gmodAddonWeapons",
 					"group": "navigation"
 				}
 			],
 			"view/item/context": [
-				{
-					"command": "gmodAddonInfo.edit",
-					"when": "view == gmodAddonInfo",
-					"group": "inline"
-				},
 				{
 					"command": "gmodWeapon.edit",
 					"when": "view == gmodAddonWeapons && viewItem =~ /^weapons\\..*/",
