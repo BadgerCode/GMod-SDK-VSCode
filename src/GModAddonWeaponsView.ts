@@ -6,15 +6,29 @@ export class GModAddonWeaponsView implements vscode.TreeDataProvider<GModWeaponM
     private _onDidChangeTreeData: vscode.EventEmitter<GModWeaponMenuItem | undefined> = new vscode.EventEmitter<GModWeaponMenuItem | undefined>();
     readonly onDidChangeTreeData: vscode.Event<GModWeaponMenuItem | undefined> = this._onDidChangeTreeData.event;
 
-    constructor(private addonManager: GModWeaponManager) { }
+    constructor(private workspaceRoot: string | undefined, private weaponManager: GModWeaponManager) { }
 
     getTreeItem(element: GModWeaponMenuItem): vscode.TreeItem {
         return element;
     }
 
     getChildren(element?: GModWeaponMenuItem): Thenable<GModWeaponMenuItem[]> {
+        if (this.workspaceRoot == undefined)
+            return Promise.resolve([]);
+
         if (!element) {
-            return Promise.resolve(this.addonManager.getWeapons().map((weapon, index) => GModWeaponMenuItem.CreateWeaponItem(weapon)));
+            return Promise.resolve([
+                new GModWeaponMenuItem("createweapon", "Create a Weapon", undefined, vscode.TreeItemCollapsibleState.Collapsed),
+                new GModWeaponMenuItem("weapons", "Weapons", "folder.svg", vscode.TreeItemCollapsibleState.Expanded)
+            ]);
+        }
+        else if (element.id == "weapons") {
+            return Promise.resolve(this.weaponManager.getWeapons().map((weapon, index) => GModWeaponMenuItem.CreateWeaponItem(weapon)));
+        }
+        else if (element.id == "createweapon") {
+            return Promise.resolve([
+                new GModWeaponMenuItem("createweapon.ttt", "Create a TTT Weapon")
+            ]);
         }
         else {
             return Promise.resolve([]);
@@ -35,7 +49,7 @@ export class GModWeaponMenuItem extends vscode.TreeItem {
 
     weapon: GModWeapon | undefined;
 
-    constructor(id: string,
+    constructor(public readonly id: string,
         label: string,
         iconName: string | undefined = undefined,
         collapsedState: vscode.TreeItemCollapsibleState = vscode.TreeItemCollapsibleState.None
@@ -57,6 +71,6 @@ export class GModWeaponMenuItem extends vscode.TreeItem {
     }
 
     get description(): string {
-        return this.label || "";
+        return "";
     }
 }

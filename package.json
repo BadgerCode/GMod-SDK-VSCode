@@ -116,11 +116,6 @@
 					"group": "navigation"
 				},
 				{
-					"command": "gmodSDK.createWeapon",
-					"when": "view == gmodAddonWeapons",
-					"group": "navigation"
-				},
-				{
 					"command": "gmodSDK.uploadAddon",
 					"when": "view == gmodWorkshop",
 					"group": "navigation"
@@ -135,6 +130,11 @@
 				{
 					"command": "gmodWeapon.edit",
 					"when": "view == gmodAddonWeapons && viewItem =~ /^weapons\\..*/",
+					"group": "inline"
+				},
+				{
+					"command": "gmodSDK.createWeapon",
+					"when": "view == gmodAddonWeapons && viewItem =~ /^createweapon\\..*/",
 					"group": "inline"
 				}
 			]
