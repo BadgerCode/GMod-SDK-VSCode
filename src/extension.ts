@@ -6,6 +6,7 @@ import { GModWeaponManager } from './GModWeaponManager';
 import { GModWorkshopView } from './GModWorkshopView';
 import { GModWorkshopManager } from './GModWorkshopManager';
 import { WorkshopUploadWizard } from './Wizards/WorkshopUploadWizard';
+import { WorkshopThumbnailWizard } from './Wizards/WorkshopThumbnailWizard';
 
 
 export function activate(context: vscode.ExtensionContext) {
@@ -46,6 +47,7 @@ export function activate(context: vscode.ExtensionContext) {
 	});
 	context.subscriptions.push(createWeaponCommand);
 
+
 	let uploadWorkshopCommand = vscode.commands.registerCommand('gmodSDK.uploadAddon', () => {
 		if (addonManager.getAddonInfo() == undefined) {
 			vscode.window.showInformationMessage("addon.json missing. Please create an addon first.")
@@ -55,6 +57,12 @@ export function activate(context: vscode.ExtensionContext) {
 		new WorkshopUploadWizard(workshopManager).show();
 	});
 	context.subscriptions.push(uploadWorkshopCommand);
+
+
+	let updateWorkshopThumbnailCommand = vscode.commands.registerCommand('gmodSDK.updateAddonThumbnail', () => {
+		new WorkshopThumbnailWizard(workshopManager).show();
+	});
+	context.subscriptions.push(updateWorkshopThumbnailCommand);
 
 
 

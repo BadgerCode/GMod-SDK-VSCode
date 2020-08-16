@@ -42,6 +42,14 @@
 				}
 			},
 			{
+				"command": "gmodSDK.updateAddonThumbnail",
+				"title": "Set the thumbnail for a workshop addon",
+				"icon": {
+					"light": "resources/light/thumbnail.svg",
+					"dark": "resources/dark/thumbnail.svg"
+				}
+			},
+			{
 				"command": "gmodAddonInfo.edit",
 				"title": "Open addon.json",
 				"icon": {
@@ -103,6 +111,11 @@
 				},
 				{
 					"command": "gmodSDK.uploadAddon",
+					"when": "view == gmodWorkshop",
+					"group": "navigation"
+				},
+				{
+					"command": "gmodSDK.updateAddonThumbnail",
 					"when": "view == gmodWorkshop",
 					"group": "navigation"
 				}
