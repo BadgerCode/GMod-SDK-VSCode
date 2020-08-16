@@ -6,13 +6,15 @@ export class WorkshopUploadWizard {
     constructor(private workshopManager: GModWorkshopManager) { }
 
     show(): void {
+        this.workshopManager.validateConfigForAddonUpload();
+
         vscode.window
-            .showQuickPick(["NEW", "Existing Addon"], { placeHolder: "Upload a new addon or update an existing addon?" })
+            .showQuickPick(["New Addon", "Existing Addon"], { placeHolder: "Upload a new addon or update an existing addon?" })
             .then(response => {
                 if (response == undefined)
                     return;
 
-                var shouldUploadNewAddon = response == "NEW";
+                var shouldUploadNewAddon = response == "New Addon";
                 if (shouldUploadNewAddon) {
                     vscode.window.showInputBox({ prompt: "This will upload a NEW addon to the workshop. Type YES to continue", placeHolder: "YES" })
                         .then(confirmation => {

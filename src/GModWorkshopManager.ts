@@ -6,12 +6,13 @@ export class GModWorkshopManager {
     private static DEBUGMODE: boolean = false;
 
     private get gmadExecutablePath(): string {
-        var path = vscode.workspace.getConfiguration('gmod')
+        var path = vscode.workspace.getConfiguration('gmod-sdk')
             .get<string>("gmadExecutablePath");
 
         if (path == undefined || !this.pathExists(path)) {
             var errorMessage = `Unable to find gmad program. To fix this, Open Settings, search for gmod.gmadExecutablePath and follow the instructions.`;
-            vscode.window.showErrorMessage(errorMessage)
+            vscode.commands.executeCommand("workbench.action.openSettings2")
+                .then(() => { vscode.window.showErrorMessage(errorMessage) });
             throw errorMessage;
         }
 
@@ -19,12 +20,13 @@ export class GModWorkshopManager {
     }
 
     private get gmpublishExecutablePath(): string {
-        var path = vscode.workspace.getConfiguration('gmod')
+        var path = vscode.workspace.getConfiguration('gmod-sdk')
             .get<string>("gmpublishExecutablePath");
 
         if (path == undefined || !this.pathExists(path)) {
             var errorMessage = `Unable to find gmad program. To fix this, Open Settings, search for gmod.gmpublishExecutablePath and follow the instructions.`;
-            vscode.window.showErrorMessage(errorMessage)
+            vscode.commands.executeCommand("workbench.action.openSettings2")
+                .then(() => { vscode.window.showErrorMessage(errorMessage) });
             throw errorMessage;
         }
 
@@ -32,6 +34,14 @@ export class GModWorkshopManager {
     }
 
     constructor(private workspacePath: string | undefined, private samplesRoot: string) { }
+
+    validateConfigForAddonUpload(): void {
+        var gmadPath = this.gmadExecutablePath;
+    }
+
+    validateConfigForThumbnailUpload(): void {
+        var gmpublishPath = this.gmpublishExecutablePath;
+    }
 
     upload(): void {
         if (this.workspacePath == undefined)

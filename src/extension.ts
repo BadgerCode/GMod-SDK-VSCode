@@ -66,20 +66,6 @@ export function activate(context: vscode.ExtensionContext) {
 
 
 
-
-	let testCommand = vscode.commands.registerCommand('gmodSDK.test', () => {
-		if (vscode.workspace.rootPath == undefined)
-			return;
-
-		var terminal = vscode.window.createTerminal("GMod Publish");
-		terminal.show();
-		terminal.sendText("echo \"Hello world\"");
-		terminal.sendText(`& "C:\\Program Files (x86)\\Steam\\steamapps\\common\\garrysmod\\bin\\gmad.exe" create -folder "${vscode.workspace.rootPath}" -warninvalid`)
-	});
-	context.subscriptions.push(testCommand);
-
-
-
 	// INTERNAL COMMANDS
 	let refreshAddonInfoCommand = vscode.commands.registerCommand('gmodAddonInfo.refresh', () => {
 		gmodAddonInfoView.refresh();

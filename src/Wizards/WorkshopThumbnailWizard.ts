@@ -7,6 +7,8 @@ export class WorkshopThumbnailWizard {
     constructor(private workshopManager: GModWorkshopManager) { }
 
     show(): void {
+        this.workshopManager.validateConfigForThumbnailUpload();
+
         vscode.window.showOpenDialog({
             canSelectFolders: false,
             canSelectMany: false,
