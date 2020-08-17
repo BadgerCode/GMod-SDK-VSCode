@@ -16,23 +16,7 @@ export class GModAddonWeaponsView implements vscode.TreeDataProvider<GModWeaponM
         if (this.workspaceRoot == undefined)
             return Promise.resolve([]);
 
-        if (!element) {
-            return Promise.resolve([
-                new GModWeaponMenuItem("createweapon", "Create a Weapon", undefined, vscode.TreeItemCollapsibleState.Collapsed),
-                new GModWeaponMenuItem("weapons", "Weapons", "folder.svg", vscode.TreeItemCollapsibleState.Expanded)
-            ]);
-        }
-        else if (element.id == "weapons") {
-            return Promise.resolve(this.weaponManager.getWeapons().map((weapon, index) => GModWeaponMenuItem.CreateWeaponItem(weapon)));
-        }
-        else if (element.id == "createweapon") {
-            return Promise.resolve([
-                new GModWeaponMenuItem("createweapon.ttt", "Create a TTT Weapon")
-            ]);
-        }
-        else {
-            return Promise.resolve([]);
-        }
+        return Promise.resolve(this.weaponManager.getWeapons().map((weapon, index) => GModWeaponMenuItem.CreateWeaponItem(weapon)));
     }
 
     refresh(): void {

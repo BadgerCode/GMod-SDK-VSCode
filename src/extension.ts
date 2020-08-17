@@ -7,6 +7,7 @@ import { GModWorkshopView } from './GModWorkshopView';
 import { GModWorkshopManager } from './GModWorkshopManager';
 import { WorkshopUploadWizard } from './Wizards/WorkshopUploadWizard';
 import { WorkshopThumbnailWizard } from './Wizards/WorkshopThumbnailWizard';
+import { CreateWeaponWizard } from './Wizards/CreateWeaponWizard';
 
 
 export function activate(context: vscode.ExtensionContext) {
@@ -42,8 +43,11 @@ export function activate(context: vscode.ExtensionContext) {
 			return;
 		}
 
-		weaponManager.createSampleTTTWeapon();
-		gmodAddonWeaponView.refresh();
+		new CreateWeaponWizard(weaponManager)
+			.show()
+			.then(() => {
+				gmodAddonWeaponView.refresh();
+			});
 	});
 	context.subscriptions.push(createWeaponCommand);
 

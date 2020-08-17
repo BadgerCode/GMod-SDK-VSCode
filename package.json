@@ -30,7 +30,7 @@
 				},
 				"gmod-sdk.gmpublishExecutablePath": {
 					"type": "string",
-					"markdownDescription":"The path to the **gmpublish** program, found in your Garry's Mod bin folder.\n\nFor example: `C:\\Program Files (x86)\\Steam\\steamapps\\common\\garrysmod\\bin\\gmad.exe`\n\n[Help](https://gist.github.com/BadgerCode/00600eab40556c6e8809590d263ea053)",
+					"markdownDescription": "The path to the **gmpublish** program, found in your Garry's Mod bin folder.\n\nFor example: `C:\\Program Files (x86)\\Steam\\steamapps\\common\\garrysmod\\bin\\gmad.exe`\n\n[Help](https://gist.github.com/BadgerCode/00600eab40556c6e8809590d263ea053)",
 					"default": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\garrysmod\\bin\\gmpublish.exe"
 				}
 			}
@@ -116,6 +116,11 @@
 					"group": "navigation"
 				},
 				{
+					"command": "gmodSDK.createWeapon",
+					"when": "view == gmodAddonWeapons",
+					"group": "navigation"
+				},
+				{
 					"command": "gmodSDK.uploadAddon",
 					"when": "view == gmodWorkshop",
 					"group": "navigation"
@@ -130,11 +135,6 @@
 				{
 					"command": "gmodWeapon.edit",
 					"when": "view == gmodAddonWeapons && viewItem =~ /^weapons\\..*/",
-					"group": "inline"
-				},
-				{
-					"command": "gmodSDK.createWeapon",
-					"when": "view == gmodAddonWeapons && viewItem =~ /^createweapon\\..*/",
 					"group": "inline"
 				}
 			]
