@@ -19,6 +19,14 @@ export class GModWeaponManager {
                 );
         }
 
+        const sandboxToolsPath = path.join(this.workspaceRoot, "lua/weapons/gmod_tool/stools");
+        if (this.pathExists(sandboxToolsPath)) {
+            weapons = weapons
+                .concat(this.findWeapons(sandboxToolsPath)
+                    .map(fullPath => new GModWeapon(path.basename(fullPath, ".lua"), `lua/weapons/gmod_tool/stools`, fullPath))
+                );
+        }
+
         const gamemodesPath = path.join(this.workspaceRoot, "gamemodes");
         if (this.pathExists(gamemodesPath)) {
             var gamemodes = fs.readdirSync(gamemodesPath, { withFileTypes: true })
@@ -33,6 +41,14 @@ export class GModWeaponManager {
                     weapons = weapons.concat(
                         this.findWeapons(gamemodeWeaponsPath)
                             .map(fullPath => new GModWeapon(path.basename(fullPath, ".lua"), `gamemodes/${gamemode}/entities/weapons`, fullPath)));
+                }
+
+                const gamemodeSandboxToolsPath = path.join(gamemodesPath, gamemode, "entities/weapons/gmod_tool/stools");
+                if (this.pathExists(gamemodeSandboxToolsPath)) {
+                    weapons = weapons
+                        .concat(this.findWeapons(gamemodeSandboxToolsPath)
+                            .map(fullPath => new GModWeapon(path.basename(fullPath, ".lua"), `gamemodes/${gamemode}/entities/weapons/gmod_tool/stools`, fullPath))
+                        );
                 }
             }
         }
