@@ -6,25 +6,24 @@ import { glob } from "glob";
 export class GModWeaponManager {
     constructor(private workspaceRoot: string | undefined, private samplesRoot: string) { }
 
-    getWeapons(): GModWeapon[] {
-        if (!this.workspaceRoot) return [];
+    getWeapons(): GModWeaponOverview {
+        var weaponsOverview = new GModWeaponOverview();
 
-        var weapons: GModWeapon[] = [];
+        if (!this.workspaceRoot) return weaponsOverview;
+
 
         const weaponsPath = path.join(this.workspaceRoot, "lua/weapons");
         if (this.pathExists(weaponsPath)) {
-            weapons = weapons
-                .concat(this.findWeapons(weaponsPath)
-                    .map(fullPath => new GModWeapon(path.basename(fullPath, ".lua"), `lua/weapons`, fullPath))
-                );
+            weaponsOverview.addWeapons(this.findWeapons(weaponsPath)
+                .map(fullPath => new GModWeapon(path.basename(fullPath, ".lua"), `lua/weapons`, fullPath))
+            );
         }
 
         const sandboxToolsPath = path.join(this.workspaceRoot, "lua/weapons/gmod_tool/stools");
         if (this.pathExists(sandboxToolsPath)) {
-            weapons = weapons
-                .concat(this.findWeapons(sandboxToolsPath)
-                    .map(fullPath => new GModWeapon(path.basename(fullPath, ".lua"), `lua/weapons/gmod_tool/stools`, fullPath))
-                );
+            weaponsOverview.addSandboxTools(this.findWeapons(sandboxToolsPath)
+                .map(fullPath => new GModWeapon(path.basename(fullPath, ".lua"), `lua/weapons/gmod_tool/stools`, fullPath))
+            );
         }
 
         const gamemodesPath = path.join(this.workspaceRoot, "gamemodes");
@@ -38,22 +37,23 @@ export class GModWeaponManager {
                 var gamemodeWeaponsPath = path.join(gamemodesPath, gamemode, "entities/weapons/");
 
                 if (this.pathExists(gamemodeWeaponsPath)) {
-                    weapons = weapons.concat(
-                        this.findWeapons(gamemodeWeaponsPath)
-                            .map(fullPath => new GModWeapon(path.basename(fullPath, ".lua"), `gamemodes/${gamemode}/entities/weapons`, fullPath)));
+                    weaponsOverview.addWeapons(this.findWeapons(gamemodeWeaponsPath)
+                        .map(fullPath => new GModWeapon(path.basename(fullPath, ".lua"), `gamemodes/${gamemode}/entities/weapons`, fullPath))
+                    );
                 }
 
                 const gamemodeSandboxToolsPath = path.join(gamemodesPath, gamemode, "entities/weapons/gmod_tool/stools");
                 if (this.pathExists(gamemodeSandboxToolsPath)) {
-                    weapons = weapons
-                        .concat(this.findWeapons(gamemodeSandboxToolsPath)
-                            .map(fullPath => new GModWeapon(path.basename(fullPath, ".lua"), `gamemodes/${gamemode}/entities/weapons/gmod_tool/stools`, fullPath))
-                        );
+                    weaponsOverview.addSandboxTools(this.findWeapons(gamemodeSandboxToolsPath)
+                        .map(fullPath => new GModWeapon(path.basename(fullPath, ".lua"), `gamemodes/${gamemode}/entities/weapons/gmod_tool/stools`, fullPath))
+                    );
                 }
             }
         }
 
-        return weapons;
+        weaponsOverview.sort();
+
+        return weaponsOverview;
     }
 
     private findWeapons(directoryPath: string): string[] {
@@ -155,6 +155,49 @@ export class GModWeaponManager {
                 debugger;
             }
         );
+    }
+}
+
+export class GModWeaponOverview {
+    public weapons: GModWeapon[];
+    public sandboxTools: GModWeapon[];
+
+    constructor() {
+        this.weapons = [];
+        this.sandboxTools = [];
+    }
+
+    addWeapons(weapons: GModWeapon[]): void {
+        this.weapons = this.weapons.concat(weapons);
+    }
+
+    addSandboxTools(tools: GModWeapon[]): void {
+        this.sandboxTools = this.sandboxTools.concat(tools);
+    }
+
+    sort(): void {
+        this.weapons.sort(this.sortFunc);
+        this.sandboxTools.sort(this.sortFunc);
+    }
+
+    private sortFunc(a: GModWeapon, b: GModWeapon): number {
+        if (a.name < b.name) {
+            return -1;
+        }
+
+        if (a.name > b.name) {
+            return 1;
+        }
+
+        if (a.relativePath < b.relativePath) {
+            return -1;
+        }
+
+        if (a.relativePath > b.relativePath) {
+            return 1;
+        }
+
+        return 0;
     }
 }
 
