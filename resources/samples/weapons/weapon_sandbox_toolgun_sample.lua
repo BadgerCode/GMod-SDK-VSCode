@@ -1,35 +1,64 @@
--- Define these!
-TOOL.Category = "My Category" -- Name of the category
-TOOL.Name = "#tool.example.name" -- Name to display. # means it will be translated ( see below )
 
-if ( true ) then return end -- Don't actually run anything below, remove this to make everything below functional
+-- IMPORTANT
+-- =========
+-- Set this to your file name without the ".lua" on the end
+-- Sandbox tools use the filename for storing information and translations
+local FileName = "cool_tool"
 
-if ( CLIENT ) then -- We can only use language.Add on client
-	language.Add( "tool.example.name", "My example tool" ) -- Add translation
+
+TOOL.Category = "My Category"
+TOOL.Name = "#tool." .. FileName .. ".name"
+
+if CLIENT then
+    language.Add("tool." .. FileName .. ".name", "My example tool")
+    language.Add("tool." .. FileName .. ".desc", "This is an example tool")
+    language.Add("tool." .. FileName .. ".0", "Click to get started")
 end
 
--- An example clientside convar
-TOOL.ClientConVar[ "CLIENTSIDE" ] = "default"
 
--- An example serverside convar
-TOOL.ServerConVar[ "SERVERSIDE" ] = "default"
+TOOL.ClientConVar["secretmessage"] = "0"
 
--- This function/hook is called when the player presses their left click
-function TOOL:LeftClick( trace )
-	Msg( "PRIMARY FIRE\n" )
+
+
+function TOOL:LeftClick(trace)
+    if SERVER then
+		self:GetOwner():ChatPrint("Left click!")
+
+		local showSecretMessage = self:GetClientNumber("secretmessage") == 1
+
+		if showSecretMessage then
+			self:GetOwner():ChatPrint("Here is the secret message!")
+		end
+	end
 end
 
--- This function/hook is called when the player presses their right click
-function TOOL:RightClick( trace )
-	Msg( "ALT FIRE\n" )
+function TOOL:RightClick(trace)
+    if SERVER then
+		self:GetOwner():ChatPrint("Right click!")
+	end
 end
 
--- This function/hook is called when the player presses their reload key
-function TOOL:Reload( trace )
-	-- The SWEP doesn't reload so this does nothing :(
-	Msg( "RELOAD\n" )
+function TOOL:Reload(trace)
+    if SERVER then
+		self:GetOwner():ChatPrint("Reload!")
+	end
 end
+
 
 -- This function/hook is called every frame on client and every tick on the server
 function TOOL:Think()
+end
+
+
+-- This controls the part of the UI which shows options for this tool
+function TOOL.BuildCPanel(panel)
+    panel:AddControl("Header", {
+		Text = "#tool." .. FileName .. ".name",
+		Description = "#tool." .. FileName .. ".desc"
+	})
+
+	panel:AddControl("Checkbox", {
+		Label = "Enable secret message for left click",
+		Command = FileName .. "_secretmessage"
+	})
 end
