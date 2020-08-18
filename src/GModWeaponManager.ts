@@ -1,25 +1,52 @@
-import * as vscode from 'vscode';
-import * as fs from 'fs';
-import * as path from 'path';
-
+import * as vscode from "vscode";
+import * as fs from "fs";
+import * as path from "path";
+import { glob } from "glob";
 
 export class GModWeaponManager {
-    constructor(private workspaceRoot: string | undefined, private samplesRoot: string) { }
+    constructor(private workspaceRoot: string | undefined, private samplesRoot: string) {}
 
     getWeapons(): GModWeapon[] {
-        if (!this.workspaceRoot)
-            return [];
+        if (!this.workspaceRoot) return [];
 
+        var weapons: GModWeapon[] = [];
         // TODO: Check for weapons in gamemodes folder too
 
-        const weaponsPath = path.join(this.workspaceRoot, 'lua/weapons');
-        if (this.pathExists(weaponsPath) == false) {
-            return [];
+        const weaponsPath = path.join(this.workspaceRoot, "lua/weapons");
+        if (this.pathExists(weaponsPath)) {
+            weapons = weapons.concat(
+                glob
+                    .sync(path.join(weaponsPath, "*.lua"))
+                    .map((filePath) => new GModWeapon(path.basename(filePath, ".lua"), "lua/weapons", filePath))
+            );
         }
 
-        // TODO: Handle non-weapon files in the weapons directory
-        return fs.readdirSync(weaponsPath)
-            .map(fileName => new GModWeapon(fileName.replace(".lua", ""), path.join(weaponsPath, fileName)));
+        const gamemodesPath = path.join(this.workspaceRoot, "gamemodes");
+        if (this.pathExists(gamemodesPath)) {
+            var gamemodes = fs
+                .readdirSync(gamemodesPath, { withFileTypes: true })
+                .filter((fileEntity) => fileEntity.isDirectory())
+                .map((directory) => directory.name);
+
+            for (let i = 0; i < gamemodes.length; i++) {
+                const gamemode = gamemodes[i];
+
+                weapons = weapons.concat(
+                    glob
+                        .sync(path.join(gamemodesPath, gamemode, "entities/weapons/*.lua"))
+                        .map(
+                            (filePath) =>
+                                new GModWeapon(
+                                    path.basename(filePath, ".lua"),
+                                    `gamemodes/${gamemode}/entities/weapons`,
+                                    filePath
+                                )
+                        )
+                );
+            }
+        }
+
+        return weapons;
     }
 
     editWeapon(weaponPath: string): void {
@@ -39,12 +66,15 @@ export class GModWeaponManager {
         var sampleWeaponPath = path.join(weaponsPath, `${weaponTemplate.WeaponNamePrefix}${weaponName}.lua`);
         var uniqueNumber = 1;
         while (this.pathExists(sampleWeaponPath)) {
-            sampleWeaponPath = path.join(weaponsPath, `${weaponTemplate.WeaponNamePrefix}${weaponName}${uniqueNumber++}.lua`);
+            sampleWeaponPath = path.join(
+                weaponsPath,
+                `${weaponTemplate.WeaponNamePrefix}${weaponName}${uniqueNumber++}.lua`
+            );
         }
 
-        var sampleWeaponTemplatePath = path.join(this.samplesRoot, 'weapons', weaponTemplate.Filename);
+        var sampleWeaponTemplatePath = path.join(this.samplesRoot, "weapons", weaponTemplate.Filename);
         // TODO: Check if template exists
-        var sampleWeaponLua = fs.readFileSync(sampleWeaponTemplatePath, 'utf8')
+        var sampleWeaponLua = fs.readFileSync(sampleWeaponTemplatePath, "utf8");
 
         fs.writeFileSync(sampleWeaponPath, sampleWeaponLua);
 
@@ -61,28 +91,29 @@ export class GModWeaponManager {
     }
 
     private openFile(filePath: string): void {
-        vscode.workspace
-            .openTextDocument(vscode.Uri.file(filePath))
-            .then((document: vscode.TextDocument) => {
-                vscode.window.showTextDocument(document, vscode.ViewColumn.Active, false).then(e => { });
-            }, (error: any) => {
+        vscode.workspace.openTextDocument(vscode.Uri.file(filePath)).then(
+            (document: vscode.TextDocument) => {
+                vscode.window.showTextDocument(document, vscode.ViewColumn.Active, false).then((e) => {});
+            },
+            (error: any) => {
                 console.error(error);
                 debugger;
-            });
+            }
+        );
     }
 }
-
 
 export class GModWeapon {
     name: string;
     pathToFile: string;
+    relativePath: string;
 
-    constructor(name: string, pathToFile: string) {
+    constructor(name: string, relativePath: string, pathToFile: string) {
         this.name = name;
+        this.relativePath = relativePath;
         this.pathToFile = pathToFile;
     }
 }
-
 
 export class GModWeaponTemplates {
     private static readonly WeaponSamples: any = {
@@ -145,4 +176,3 @@ export class GModWeaponTemplates {
         return GModWeaponTemplates.WeaponSamples[gamemode].Weapons[template];
     }
 }
-
