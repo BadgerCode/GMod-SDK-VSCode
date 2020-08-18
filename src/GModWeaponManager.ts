@@ -4,53 +4,76 @@ import * as path from "path";
 import { glob } from "glob";
 
 export class GModWeaponManager {
-    constructor(private workspaceRoot: string | undefined, private samplesRoot: string) {}
+    constructor(private workspaceRoot: string | undefined, private samplesRoot: string) { }
 
     getWeapons(): GModWeapon[] {
         if (!this.workspaceRoot) return [];
 
         var weapons: GModWeapon[] = [];
-        // TODO: Check for weapons in gamemodes folder too
 
         const weaponsPath = path.join(this.workspaceRoot, "lua/weapons");
         if (this.pathExists(weaponsPath)) {
-            weapons = weapons.concat(
-                glob
-                    .sync(path.join(weaponsPath, "*.lua"))
-                    .map((filePath) => new GModWeapon(path.basename(filePath, ".lua"), "lua/weapons", filePath))
-            );
+            weapons = weapons
+                .concat(this.findWeapons(weaponsPath)
+                    .map(fullPath => new GModWeapon(path.basename(fullPath, ".lua"), `lua/weapons`, fullPath))
+                );
         }
 
         const gamemodesPath = path.join(this.workspaceRoot, "gamemodes");
         if (this.pathExists(gamemodesPath)) {
-            var gamemodes = fs
-                .readdirSync(gamemodesPath, { withFileTypes: true })
+            var gamemodes = fs.readdirSync(gamemodesPath, { withFileTypes: true })
                 .filter((fileEntity) => fileEntity.isDirectory())
                 .map((directory) => directory.name);
 
             for (let i = 0; i < gamemodes.length; i++) {
                 const gamemode = gamemodes[i];
+                var gamemodeWeaponsPath = path.join(gamemodesPath, gamemode, "entities/weapons/");
 
-                weapons = weapons.concat(
-                    glob
-                        .sync(path.join(gamemodesPath, gamemode, "entities/weapons/*.lua"))
-                        .map(
-                            (filePath) =>
-                                new GModWeapon(
-                                    path.basename(filePath, ".lua"),
-                                    `gamemodes/${gamemode}/entities/weapons`,
-                                    filePath
-                                )
-                        )
-                );
+                if (this.pathExists(gamemodeWeaponsPath)) {
+                    weapons = weapons.concat(
+                        this.findWeapons(gamemodeWeaponsPath)
+                            .map(fullPath => new GModWeapon(path.basename(fullPath, ".lua"), `gamemodes/${gamemode}/entities/weapons`, fullPath)));
+                }
             }
         }
 
         return weapons;
     }
 
+    private findWeapons(directoryPath: string): string[] {
+        var directoryItems = fs.readdirSync(directoryPath, { withFileTypes: true });
+        var weaponPaths: string[] = [];
+
+        for (let i = 0; i < directoryItems.length; i++) {
+            const dirItem = directoryItems[i];
+            var fullPath = path.join(directoryPath, dirItem.name);
+
+            if (dirItem.isFile()) {
+                if (dirItem.name.endsWith(".lua")) {
+                    weaponPaths.push(fullPath);
+                }
+            }
+            else if (dirItem.isDirectory()) {
+                var weaponLuaFiles = glob.sync(path.join(fullPath, "@(shared|init|cl_init).lua"));
+                if (weaponLuaFiles.length != 0)
+                    weaponPaths.push(fullPath);
+            }
+        }
+
+        return weaponPaths;
+    }
+
     editWeapon(weaponPath: string): void {
-        this.openFile(weaponPath);
+        // TODO: If path is a folder, open folder
+        if (this.pathExists(weaponPath) == false)
+            return;
+
+        if (fs.lstatSync(weaponPath).isDirectory()) {
+            this.openDirectory(weaponPath);
+        }
+        else {
+            this.openFile(weaponPath);
+        }
     }
 
     createWeaponFromTemplate(weaponName: string, weaponTemplate: any): void {
@@ -93,7 +116,23 @@ export class GModWeaponManager {
     private openFile(filePath: string): void {
         vscode.workspace.openTextDocument(vscode.Uri.file(filePath)).then(
             (document: vscode.TextDocument) => {
-                vscode.window.showTextDocument(document, vscode.ViewColumn.Active, false).then((e) => {});
+                vscode.window.showTextDocument(document, vscode.ViewColumn.Active, false).then((e) => { });
+            },
+            (error: any) => {
+                console.error(error);
+                debugger;
+            }
+        );
+    }
+
+    private openDirectory(directoryPath: string): void {
+        var weaponLuaFiles = glob.sync(path.join(directoryPath, "@(shared|init|cl_init).lua"));
+        if (weaponLuaFiles.length == 0)
+            return;
+
+        vscode.workspace.openTextDocument(vscode.Uri.file(weaponLuaFiles[0])).then(
+            (document: vscode.TextDocument) => {
+                vscode.window.showTextDocument(document, vscode.ViewColumn.Active, false).then((e) => { });
             },
             (error: any) => {
                 console.error(error);
