@@ -30,7 +30,7 @@ export function activate(context: vscode.ExtensionContext) {
 	const gmodAddonWeaponView = new GModAddonWeaponsView(vscode.workspace.rootPath, weaponManager);
 	vscode.window.registerTreeDataProvider('gmodAddonWeapons', gmodAddonWeaponView);
 
-	const gmodWorkshopView = new GModWorkshopView();
+	const gmodWorkshopView = new GModWorkshopView(workshopManager);
 	vscode.window.registerTreeDataProvider('gmodWorkshop', gmodWorkshopView);
 
 

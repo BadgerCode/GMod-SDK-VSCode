@@ -1,22 +1,34 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
+import { GModWorkshopManager } from './GModWorkshopManager';
 
 export class GModWorkshopView implements vscode.TreeDataProvider<GModWorkshopMenuItem> {
     private _onDidChangeTreeData: vscode.EventEmitter<GModWorkshopMenuItem | undefined> = new vscode.EventEmitter<GModWorkshopMenuItem | undefined>();
     readonly onDidChangeTreeData: vscode.Event<GModWorkshopMenuItem | undefined> = this._onDidChangeTreeData.event;
 
-    constructor() { }
+    private workshopItems: any[] = [];
+
+    constructor(private workshopManager: GModWorkshopManager) {
+        this.refresh();
+    }
 
     getTreeItem(element: GModWorkshopMenuItem): vscode.TreeItem {
         return element;
     }
 
     getChildren(element?: GModWorkshopMenuItem): Thenable<GModWorkshopMenuItem[]> {
-        return Promise.resolve([]);
+        return Promise.resolve(this.workshopItems
+            .map(item => new GModWorkshopMenuItem(item["publishedfileid"], item["title"]))
+        );
     }
 
     refresh(): void {
-        this._onDidChangeTreeData.fire(undefined);
+        // TODO: get steam ID from config
+        this.workshopManager.getAddonsForUser("76561198021181972")
+            .then(response => {
+                this.workshopItems = response;
+                this._onDidChangeTreeData.fire(undefined);
+            });
     }
 }
 
@@ -43,6 +55,6 @@ export class GModWorkshopMenuItem extends vscode.TreeItem {
     }
 
     get description(): string {
-        return this.label || "";
+        return this.contextValue || "";
     }
 }
