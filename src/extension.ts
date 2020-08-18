@@ -8,6 +8,8 @@ import { GModWorkshopManager } from './GModWorkshopManager';
 import { WorkshopUploadWizard } from './Wizards/WorkshopUploadWizard';
 import { WorkshopThumbnailWizard } from './Wizards/WorkshopThumbnailWizard';
 import { CreateWeaponWizard } from './Wizards/CreateWeaponWizard';
+import { LocalGModManager } from './LocalGModManager';
+import path = require('path');
 
 
 export function activate(context: vscode.ExtensionContext) {
@@ -17,6 +19,8 @@ export function activate(context: vscode.ExtensionContext) {
 	var addonManager = new GModAddonManager(vscode.workspace.rootPath);
 	var weaponManager = new GModWeaponManager(vscode.workspace.rootPath, context.asAbsolutePath('resources/samples'));
 	var workshopManager = new GModWorkshopManager(vscode.workspace.rootPath, context.asAbsolutePath('resources/samples'));
+	var localGModManager = new LocalGModManager(vscode.workspace.rootPath);
+
 
 
 	// SIDE BAR
@@ -36,6 +40,18 @@ export function activate(context: vscode.ExtensionContext) {
 		gmodAddonInfoView.refresh();
 	});
 	context.subscriptions.push(createAddonCommand);
+
+
+	let copyToGModFolderCommand = vscode.commands.registerCommand('gmodSDK.copyToLocalGarrysmod', () => {
+		if (vscode.workspace.rootPath == undefined) {
+			vscode.window.showInformationMessage("Please open a folder.")
+			return;
+		}
+
+		localGModManager.syncWorkspaceWithAddon(path.basename(vscode.workspace.rootPath));
+	});
+	context.subscriptions.push(copyToGModFolderCommand);
+
 
 	let createWeaponCommand = vscode.commands.registerCommand('gmodSDK.createWeapon', () => {
 		if (vscode.workspace.rootPath == undefined) {

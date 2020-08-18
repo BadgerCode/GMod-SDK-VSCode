@@ -32,6 +32,11 @@
 					"type": "string",
 					"markdownDescription": "The path to the **gmpublish** program, found in your Garry's Mod bin folder.\n\nFor example: `C:\\Program Files (x86)\\Steam\\steamapps\\common\\garrysmod\\bin\\gmad.exe`\n\n[Help](https://gist.github.com/BadgerCode/00600eab40556c6e8809590d263ea053)",
 					"default": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\garrysmod\\bin\\gmpublish.exe"
+				},
+				"gmod-sdk.garrysmodAddonsPath": {
+					"type": "string",
+					"markdownDescription": "The path to the **addons** folder, found in your Garry's Mod folder.\n\nFor example: `C:\\Program Files (x86)\\Steam\\steamapps\\common\\garrysmod\\garrysmod\\addons`\n\n[Help](https://gist.github.com/BadgerCode/00600eab40556c6e8809590d263ea053)",
+					"default": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\garrysmod\\garrysmod\\addons"
 				}
 			}
 		},
@@ -62,6 +67,14 @@
 				"icon": {
 					"light": "resources/light/thumbnail.svg",
 					"dark": "resources/dark/thumbnail.svg"
+				}
+			},
+			{
+				"command": "gmodSDK.copyToLocalGarrysmod",
+				"title": "Copy the addon to your Garry's Mod folder.",
+				"icon": {
+					"light": "resources/light/copy-to-folder.svg",
+					"dark": "resources/dark/copy-to-folder.svg"
 				}
 			},
 			{
@@ -108,6 +121,11 @@
 				{
 					"command": "gmodAddonInfo.refresh",
 					"when": "view == gmodAddonInfo || view == gmodAddonWeapons || view == gmodWorkshop",
+					"group": "navigation"
+				},
+				{
+					"command": "gmodSDK.copyToLocalGarrysmod",
+					"when": "view == gmodAddonInfo",
 					"group": "navigation"
 				},
 				{
@@ -186,16 +204,20 @@
 		"test": "node ./out/test/runTest.js"
 	},
 	"devDependencies": {
-		"@types/vscode": "^1.48.0",
+		"@types/fs-extra": "^9.0.1",
 		"@types/glob": "^7.1.3",
 		"@types/mocha": "^8.0.0",
 		"@types/node": "^14.0.27",
-		"eslint": "^7.6.0",
+		"@types/vscode": "^1.48.0",
 		"@typescript-eslint/eslint-plugin": "^3.8.0",
 		"@typescript-eslint/parser": "^3.8.0",
+		"eslint": "^7.6.0",
 		"glob": "^7.1.6",
 		"mocha": "^8.0.1",
 		"typescript": "^3.8.3",
 		"vscode-test": "^1.4.0"
+	},
+	"dependencies": {
+		"fs-extra": "^9.0.1"
 	}
 }
