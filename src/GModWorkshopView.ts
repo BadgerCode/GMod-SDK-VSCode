@@ -8,6 +8,7 @@ export class GModWorkshopView implements vscode.TreeDataProvider<GModWorkshopMen
 
     private workshopItems: any[] = [];
     private steamID: string | undefined = undefined;
+    private isLoading: boolean = false;
 
     constructor(private workshopManager: GModWorkshopManager) {
         this.refresh();
@@ -22,6 +23,12 @@ export class GModWorkshopView implements vscode.TreeDataProvider<GModWorkshopMen
             return Promise.resolve([]);
         }
 
+        if (this.isLoading) {
+            return Promise.resolve([
+                new GModWorkshopMenuItem("loading", "Loading...")
+            ]);
+        }
+
         if (this.workshopItems.length == 0) {
             return Promise.resolve([
                 new GModWorkshopMenuItem("no-items", "You don't have any workshop items")
@@ -29,7 +36,7 @@ export class GModWorkshopView implements vscode.TreeDataProvider<GModWorkshopMen
         }
 
         return Promise.resolve(this.workshopItems
-            .map(item => new GModWorkshopMenuItem(`item-${item["publishedfileid"]}`, item["title"]))
+            .map(item => new GModWorkshopMenuItem(`item-${item["publishedfileid"]}`, item["title"], item["publishedfileid"]))
         );
     }
 
@@ -42,8 +49,10 @@ export class GModWorkshopView implements vscode.TreeDataProvider<GModWorkshopMen
             return;
         }
 
+        this.isLoading = true;
         this.workshopManager.getAddonsForUser(this.steamID)
             .then(response => {
+                this.isLoading = false;
                 this.workshopItems = response;
                 this._onDidChangeTreeData.fire(undefined);
             });
@@ -62,6 +71,7 @@ export class GModWorkshopView implements vscode.TreeDataProvider<GModWorkshopMen
 export class GModWorkshopMenuItem extends vscode.TreeItem {
     constructor(id: string,
         label: string,
+        description: string | undefined = undefined,
         iconName: string | undefined = undefined,
         collapsedState: vscode.TreeItemCollapsibleState = vscode.TreeItemCollapsibleState.None
     ) {
@@ -76,7 +86,7 @@ export class GModWorkshopMenuItem extends vscode.TreeItem {
             };
         }
 
-        this.tooltip = this.label;
-        this.description = id;
+        this.tooltip = label;
+        this.description = description;
     }
 }
