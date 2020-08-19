@@ -2,7 +2,7 @@
 	"name": "gmod-sdk",
 	"displayName": "GMod SDK",
 	"description": "Tools for Garry's Mod addon development",
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"publisher": "BadgerCode",
 	"repository": {
 		"type": "git",
@@ -49,7 +49,7 @@
 				},
 				"gmod-sdk.gmpublishExecutablePath": {
 					"type": "string",
-					"markdownDescription": "The path to the **gmpublish** program, found in your Garry's Mod bin folder.\n\nFor example: `C:\\Program Files (x86)\\Steam\\steamapps\\common\\garrysmod\\bin\\gmad.exe`\n\n[Help](https://gist.github.com/BadgerCode/00600eab40556c6e8809590d263ea053)",
+					"markdownDescription": "The path to the **gmpublish** program, found in your Garry's Mod bin folder.\n\nFor example: `C:\\Program Files (x86)\\Steam\\steamapps\\common\\garrysmod\\bin\\gmpublish.exe`\n\n[Help](https://gist.github.com/BadgerCode/00600eab40556c6e8809590d263ea053)",
 					"default": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\garrysmod\\bin\\gmpublish.exe"
 				},
 				"gmod-sdk.garrysmodAddonsPath": {
