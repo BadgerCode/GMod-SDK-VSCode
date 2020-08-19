@@ -14,8 +14,11 @@ export class LocalGModManager {
         var addonsFolderPath = vscode.workspace.getConfiguration('gmod-sdk')
             .get<string>("garrysmodAddonsPath");
 
-        if (addonsFolderPath == undefined) {
-            // TODO: handle
+        if (addonsFolderPath == undefined || !this.pathExists(addonsFolderPath)) {
+            var errorMessage = `Unable to find addons folder. To fix this, Open Settings, search for gmod-sdk.garrysmodAddonsPath and follow the instructions.`;
+            vscode.commands.executeCommand("workbench.action.openSettings2")
+                .then(() => { vscode.window.showErrorMessage(errorMessage) });
+
             return;
         }
 
