@@ -37,13 +37,12 @@ export class GModWorkshopManager {
     constructor(private workspacePath: string | undefined, private samplesRoot: string) { }
 
     getAddonsForUser(steamID64: string): Thenable<any[]> {
-        // TODO: load all pages
-
         return new Promise((resolver, rejector) => {
             axios.get(`https://steamuserinfoapi.azurewebsites.net/api/profiles/${steamID64}/workshopitems/4000?pageNumber=1`)
                 .then(response => {
-                    var items = response.data;
-                    resolver(items);
+                    resolver(response.data.workshopItems);
+                    // Loading multiple pages of items takes too long
+                    // This is something to fix in the future
                 })
                 .catch(error => {
                     console.log(error);
