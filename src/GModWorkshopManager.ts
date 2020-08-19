@@ -140,3 +140,10 @@ export class GModWorkshopManager {
         return true;
     }
 }
+
+export enum WorkshopItemVisibility {
+    Public = 0,
+    FriendsOnly = 1,
+    Hidden = 2,
+    Unlisted = 3
+}

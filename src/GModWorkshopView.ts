@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
-import { GModWorkshopManager } from './GModWorkshopManager';
+import { GModWorkshopManager, WorkshopItemVisibility } from './GModWorkshopManager';
 
 export class GModWorkshopView implements vscode.TreeDataProvider<GModWorkshopMenuItem> {
     private _onDidChangeTreeData: vscode.EventEmitter<GModWorkshopMenuItem | undefined> = new vscode.EventEmitter<GModWorkshopMenuItem | undefined>();
@@ -36,7 +36,10 @@ export class GModWorkshopView implements vscode.TreeDataProvider<GModWorkshopMen
         }
 
         return Promise.resolve(this.workshopItems
-            .map(item => new GModWorkshopMenuItem(`item-${item["publishedfileid"]}`, item["title"], item["publishedfileid"]))
+            .map(item => {
+                var icon = this.getIconForItemVisibility(item["visibility"] as WorkshopItemVisibility);
+                return new GModWorkshopMenuItem(`item-${item["publishedfileid"]}`, item["title"], item["publishedfileid"], icon);
+            })
         );
     }
 
@@ -65,6 +68,18 @@ export class GModWorkshopView implements vscode.TreeDataProvider<GModWorkshopMen
             return undefined;
 
         return config
+    }
+
+    private getIconForItemVisibility(visibility: WorkshopItemVisibility): string | undefined {
+        switch (visibility) {
+            case WorkshopItemVisibility.FriendsOnly:
+            case WorkshopItemVisibility.Hidden:
+            case WorkshopItemVisibility.Unlisted:
+                return "workshop-item-hidden.svg";
+            case WorkshopItemVisibility.Public:
+            default:
+                return undefined;
+        }
     }
 }
 
