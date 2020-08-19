@@ -11,7 +11,7 @@ export class GModWorkshopManager {
             .get<string>("gmadExecutablePath");
 
         if (path == undefined || !this.pathExists(path)) {
-            var errorMessage = `Unable to find gmad program. To fix this, Open Settings, search for gmod.gmadExecutablePath and follow the instructions.`;
+            var errorMessage = `Unable to find gmad program. To fix this, Open Settings, search for gmod-sdk.gmadExecutablePath and follow the instructions.`;
             vscode.commands.executeCommand("workbench.action.openSettings2")
                 .then(() => { vscode.window.showErrorMessage(errorMessage) });
             throw errorMessage;
@@ -25,7 +25,7 @@ export class GModWorkshopManager {
             .get<string>("gmpublishExecutablePath");
 
         if (path == undefined || !this.pathExists(path)) {
-            var errorMessage = `Unable to find gmad program. To fix this, Open Settings, search for gmod.gmpublishExecutablePath and follow the instructions.`;
+            var errorMessage = `Unable to find gmad program. To fix this, Open Settings, search for gmod-sdk.gmpublishExecutablePath and follow the instructions.`;
             vscode.commands.executeCommand("workbench.action.openSettings2")
                 .then(() => { vscode.window.showErrorMessage(errorMessage) });
             throw errorMessage;
