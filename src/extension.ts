@@ -3,7 +3,7 @@ import { GModAddonInfoView } from './GModAddonInfoView';
 import { GModAddonManager } from './GModAddonManager';
 import { GModAddonWeaponsView, GModWeaponMenuItem } from './GModAddonWeaponsView';
 import { GModWeaponManager } from './GModWeaponManager';
-import { GModWorkshopView } from './GModWorkshopView';
+import { GModWorkshopView, GModWorkshopMenuItem } from './GModWorkshopView';
 import { GModWorkshopManager } from './GModWorkshopManager';
 import { WorkshopUploadWizard } from './Wizards/WorkshopUploadWizard';
 import { WorkshopThumbnailWizard } from './Wizards/WorkshopThumbnailWizard';
@@ -68,19 +68,29 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(createWeaponCommand);
 
 
-	let uploadWorkshopCommand = vscode.commands.registerCommand('gmodSDK.uploadAddon', () => {
+	let uploadWorkshopCommand = vscode.commands.registerCommand('gmodSDK.uploadAddon', (targetWorkshopItem: GModWorkshopMenuItem | undefined) => {
 		if (addonManager.getAddonInfo() == undefined) {
 			vscode.window.showInformationMessage("addon.json missing. Please create an addon first.")
 			return;
 		}
 
-		new WorkshopUploadWizard(workshopManager).show();
+		var targetWorkshopItemID = undefined;
+		if (targetWorkshopItem != undefined && targetWorkshopItem.workshopFileId != undefined) {
+			targetWorkshopItemID = targetWorkshopItem.workshopFileId;
+		}
+
+		new WorkshopUploadWizard(workshopManager).show(targetWorkshopItemID);
 	});
 	context.subscriptions.push(uploadWorkshopCommand);
 
 
-	let updateWorkshopThumbnailCommand = vscode.commands.registerCommand('gmodSDK.updateAddonThumbnail', () => {
-		new WorkshopThumbnailWizard(workshopManager).show();
+	let updateWorkshopThumbnailCommand = vscode.commands.registerCommand('gmodSDK.updateAddonThumbnail', (targetWorkshopItem: GModWorkshopMenuItem | undefined) => {
+		var targetWorkshopItemID = undefined;
+		if (targetWorkshopItem != undefined && targetWorkshopItem.workshopFileId != undefined) {
+			targetWorkshopItemID = targetWorkshopItem.workshopFileId;
+		}
+
+		new WorkshopThumbnailWizard(workshopManager).show(targetWorkshopItemID);
 	});
 	context.subscriptions.push(updateWorkshopThumbnailCommand);
 

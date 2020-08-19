@@ -167,6 +167,16 @@
 					"command": "gmodWeapon.edit",
 					"when": "view == gmodAddonWeapons && viewItem =~ /^weapons\\..*/",
 					"group": "inline"
+				},
+				{
+					"command": "gmodSDK.uploadAddon",
+					"when": "view == gmodWorkshop && viewItem =~ /^item-.*/",
+					"group": "inline"
+				},
+				{
+					"command": "gmodSDK.updateAddonThumbnail",
+					"when": "view == gmodWorkshop && viewItem =~ /^item-.*/",
+					"group": "inline"
 				}
 			]
 		},

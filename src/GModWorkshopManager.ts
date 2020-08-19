@@ -92,12 +92,10 @@ export class GModWorkshopManager {
             return;
 
         var gmaPath = path.join(this.workspacePath!, "workshop-file.gma");
-        var thumbnailPath = path.join(this.samplesRoot, "workshop-thumbnail.jpg");
 
         if (GModWorkshopManager.DEBUGMODE) {
             console.log(`Pretending to upload GMA to existing addon ${fileID}`);
             console.log(`GMA: ${gmaPath}`);
-            console.log(`Thumbnail: ${thumbnailPath}`);
             return;
         }
 

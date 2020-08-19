@@ -38,7 +38,10 @@ export class GModWorkshopView implements vscode.TreeDataProvider<GModWorkshopMen
         return Promise.resolve(this.workshopItems
             .map(item => {
                 var icon = this.getIconForItemVisibility(item["visibility"] as WorkshopItemVisibility);
-                return new GModWorkshopMenuItem(`item-${item["publishedfileid"]}`, item["title"], item["publishedfileid"], icon);
+                var menuItem = new GModWorkshopMenuItem(`item-${item["publishedfileid"]}`, item["title"], item["publishedfileid"], icon);
+                menuItem.workshopFileId = item["publishedfileid"];
+
+                return menuItem;
             })
         );
     }
@@ -84,6 +87,8 @@ export class GModWorkshopView implements vscode.TreeDataProvider<GModWorkshopMen
 }
 
 export class GModWorkshopMenuItem extends vscode.TreeItem {
+    workshopFileId: string | undefined;
+
     constructor(id: string,
         label: string,
         description: string | undefined = undefined,
