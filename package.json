@@ -1,20 +1,39 @@
 {
 	"name": "gmod-sdk",
 	"displayName": "GMod SDK",
-	"description": "Makes Garry's Mod addon development easier",
+	"description": "Tools for Garry's Mod addon development",
 	"version": "0.0.1",
 	"publisher": "BadgerCode",
-	"repository": "https://github.com/BadgerCode/GMod-SDK-VSCode",
+	"repository": {
+        "type": "git",
+        "url": "https://github.com/BadgerCode/GMod-SDK-VSCode"
+    },
+    "galleryBanner": {
+        "color": "#3a3d41",
+        "theme": "dark"
+    },
+	"homepage": "https://github.com/BadgerCode/GMod-SDK-VSCode/blob/master/README.md",
+	"qna": "https://github.com/BadgerCode/GMod-SDK-VSCode/issues",
+    "license": "SEE LICENSE IN LICENSE",
+	"icon": "resources/package-icon.png",
 	"engines": {
 		"vscode": "^1.48.0"
 	},
 	"categories": [
+		"Extension Packs",
 		"Other"
+	],
+	"keywords": [
+		"gmod",
+		"glua"
 	],
 	"main": "./out/extension.js",
 	"activationEvents": [
 		"onCommand:gmodSDK.createAddon",
 		"onCommand:gmodSDK.createWeapon",
+		"onCommand:gmodSDK.uploadAddon",
+		"onCommand:gmodSDK.updateAddonThumbnail",
+		"onCommand:gmodSDK.copyToLocalGarrysmod",
 		"onView:gmodAddonInfo",
 		"onView:gmodAddonWeapons",
 		"onView:gmodWorkshop"
