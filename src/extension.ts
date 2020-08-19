@@ -104,6 +104,29 @@ export function activate(context: vscode.ExtensionContext) {
 		weaponManager.editWeapon(item.weapon.pathToFile);
 	});
 	context.subscriptions.push(editWeaponCommand);
+
+	let selectSteamIDCommand = vscode.commands.registerCommand('gmodWorkshop.selectSteamID', () => {
+		vscode.window.showInputBox({ prompt: "Enter your long Steam ID (SteamID64)" })
+			.then(response => {
+				if (response == undefined)
+					return;
+
+				var steamID = response.trim();
+				if (isNaN(Number(steamID))) {
+					vscode.window.showInformationMessage(`"${steamID}" is not a valid Steam ID. E.g. 70561198021123456`);
+					return;
+				}
+
+				vscode.workspace.getConfiguration('gmod-sdk')
+					.update("steamID", steamID, vscode.ConfigurationTarget.Global)
+					.then(() => {
+						setTimeout(() => {
+							gmodWorkshopView.refresh();
+						}, 1000);
+					});
+			});
+	});
+	context.subscriptions.push(selectSteamIDCommand);
 }
 
 

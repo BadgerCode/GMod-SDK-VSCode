@@ -7,6 +7,7 @@ export class GModWorkshopView implements vscode.TreeDataProvider<GModWorkshopMen
     readonly onDidChangeTreeData: vscode.Event<GModWorkshopMenuItem | undefined> = this._onDidChangeTreeData.event;
 
     private workshopItems: any[] = [];
+    private steamID: string | undefined = undefined;
 
     constructor(private workshopManager: GModWorkshopManager) {
         this.refresh();
@@ -17,18 +18,44 @@ export class GModWorkshopView implements vscode.TreeDataProvider<GModWorkshopMen
     }
 
     getChildren(element?: GModWorkshopMenuItem): Thenable<GModWorkshopMenuItem[]> {
+        if (this.steamID == undefined) {
+            return Promise.resolve([]);
+        }
+
+        if (this.workshopItems.length == 0) {
+            return Promise.resolve([
+                new GModWorkshopMenuItem("no-items", "You don't have any workshop items")
+            ]);
+        }
+
         return Promise.resolve(this.workshopItems
-            .map(item => new GModWorkshopMenuItem(item["publishedfileid"], item["title"]))
+            .map(item => new GModWorkshopMenuItem(`item-${item["publishedfileid"]}`, item["title"]))
         );
     }
 
     refresh(): void {
-        // TODO: get steam ID from config
-        this.workshopManager.getAddonsForUser("76561198021181972")
+        this.steamID = this.getSteamID();
+
+        if (this.steamID == undefined) {
+            this.workshopItems = [];
+            this._onDidChangeTreeData.fire(undefined);
+            return;
+        }
+
+        this.workshopManager.getAddonsForUser(this.steamID)
             .then(response => {
                 this.workshopItems = response;
                 this._onDidChangeTreeData.fire(undefined);
             });
+    }
+
+    private getSteamID(): string | undefined {
+        var config = vscode.workspace.getConfiguration('gmod-sdk').get<string>("steamID");
+
+        if (config == undefined || config.length == 0)
+            return undefined;
+
+        return config
     }
 }
 

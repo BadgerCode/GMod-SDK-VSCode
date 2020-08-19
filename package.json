@@ -37,6 +37,11 @@
 					"type": "string",
 					"markdownDescription": "The path to the **addons** folder, found in your Garry's Mod folder.\n\nFor example: `C:\\Program Files (x86)\\Steam\\steamapps\\common\\garrysmod\\garrysmod\\addons`\n\n[Help](https://gist.github.com/BadgerCode/00600eab40556c6e8809590d263ea053)",
 					"default": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\garrysmod\\garrysmod\\addons"
+				},
+				"gmod-sdk.steamID": {
+					"type": "string",
+					"markdownDescription": "Your long (steamID64) Steam ID. Used to load your workshop items.\n\n[Help](https://steamid.io/)\n\nE.g. 70561198021123456",
+					"default": ""
 				}
 			}
 		},
@@ -100,13 +105,17 @@
 					"light": "resources/light/edit.svg",
 					"dark": "resources/dark/edit.svg"
 				}
+			},
+			{
+				"command": "gmodWorkshop.selectSteamID",
+				"title": "Select Steam ID"
 			}
 		],
 		"menus": {
 			"commandPalette": [
 				{
 					"command": "gmodAddonInfo.edit",
-					"when": "view == gmodAddonInfo"
+					"when": "false"
 				},
 				{
 					"command": "gmodAddonInfo.refresh",
@@ -114,6 +123,10 @@
 				},
 				{
 					"command": "gmodWeapon.edit",
+					"when": "false"
+				},
+				{
+					"command": "gmodWorkshop.selectSteamID",
 					"when": "false"
 				}
 			],
@@ -183,6 +196,10 @@
 			{
 				"view": "gmodAddonInfo",
 				"contents": "You are not in a Garry's Mod addon folder.\n(Could not find addon.json)\n[Create addon](command:gmodSDK.createAddon)"
+			},
+			{
+				"view": "gmodWorkshop",
+				"contents": "Please select your Steam account to view your workshop items.\n\nHow to get your Steam ID - [https://steamid.io/](https://steamid.io/)\n\n[Select Account](command:gmodWorkshop.selectSteamID)"
 			}
 		],
 		"viewsContainers": {
