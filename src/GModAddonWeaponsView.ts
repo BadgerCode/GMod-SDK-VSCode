@@ -75,13 +75,8 @@ export class GModWeaponMenuItem extends vscode.TreeItem {
                 dark: path.join(__filename, "..", "..", "resources", "dark", iconName)
             };
         }
-    }
 
-    get tooltip(): string {
-        return this.weapon?.pathToFile || "";
-    }
-
-    get description(): string {
-        return this.relativePath || "";
+        this.tooltip = this.weapon?.pathToFile;
+        this.description = this.relativePath;
     }
 }

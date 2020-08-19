@@ -48,13 +48,8 @@ export class GModWorkshopMenuItem extends vscode.TreeItem {
                 dark: path.join(__filename, '..', '..', 'resources', 'dark', iconName)
             };
         }
-    }
 
-    get tooltip(): string {
-        return this.label || "";
-    }
-
-    get description(): string {
-        return this.contextValue || "";
+        this.tooltip = this.label;
+        this.description = id;
     }
 }

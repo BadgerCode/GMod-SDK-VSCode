@@ -68,13 +68,8 @@ export class GModMenuItem extends vscode.TreeItem {
         }
 
         this.contextValue = id;
-    }
 
-    get tooltip(): string {
-        return `${this.label}-${this.value}`;
-    }
-
-    get description(): string {
-        return this.value;
+        this.tooltip = this.value;
+        this.description = this.value;
     }
 }
