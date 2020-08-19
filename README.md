@@ -13,14 +13,17 @@ It is recommended that you also install the [GLua language support extension](ht
 
 # Create your first Workshop item
 1. Open a folder in VS Code and click Create Addon
-![create-addon-button](resources/readme/create-addon-1.png)
+
+    ![create-addon-button](resources/readme/create-addon-1.png)
 
 2. Add your content to the addon.<br>
-For example, create a weapon using the weapons interface.
-![create-addon-button](resources/readme/create-addon-2.png)
+    For example, create a weapon using the weapons interface.
 
-3. Upload your addon to the workshop (Steam must be running).<br>
-![create-addon-button](resources/readme/create-addon-3.png)
+    ![create-addon-button](resources/readme/create-addon-2.png)
+
+3. Upload your addon to the workshop (Steam must be running).
+
+    ![create-addon-button](resources/readme/create-addon-3.png)
 
 <br>
 <br>
