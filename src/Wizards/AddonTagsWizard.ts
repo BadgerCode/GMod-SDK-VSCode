@@ -18,6 +18,7 @@ export class AddonTagsWizard {
 
                     var firstTag = AddonTag[tag1 as keyof typeof AddonTag];
 
+                    types.splice(types.indexOf(tag1), 1);
                     types.unshift("None");
 
                     vscode.window

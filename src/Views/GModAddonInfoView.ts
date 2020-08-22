@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
-import { GModAddonManager, GModAddonInfo } from '../Services/GModAddonManager';
+import { GModAddonManager, GModAddonInfo, AddonTag, AddonType } from '../Services/GModAddonManager';
 
 export class GModAddonInfoView implements vscode.TreeDataProvider<GModMenuItem> {
     private _onDidChangeTreeData: vscode.EventEmitter<GModMenuItem | undefined> = new vscode.EventEmitter<GModMenuItem | undefined>();
@@ -21,11 +21,16 @@ export class GModAddonInfoView implements vscode.TreeDataProvider<GModMenuItem> 
             return Promise.resolve([]);
 
         if (!element) {
+            var typeDescription = this.isAddonTypeValid(this.addonInfo.type) ? this.addonInfo.type : "❌ INVALID TYPE";
+            var tagsDescription = this.areTagsValid(this.addonInfo.tags)
+                ? (this.addonInfo.tags.length <= 2 ? this.addonInfo.tags.join(", ") : "❌ TOO MANY TAGS")
+                : "❌ INVALID TAGS";
+
             return Promise.resolve([
                 new GModMenuItem("title", "Title", this.addonInfo.title),
                 new GModMenuItem("description", "Description", this.addonInfo.description),
-                new GModMenuItem("type", "Type", this.addonInfo.type),
-                new GModMenuItem("tags", "Tags", this.addonInfo.tags.join(", ")),
+                new GModMenuItem("type", "Type", typeDescription),
+                new GModMenuItem("tags", "Tags", tagsDescription),
                 new GModMenuItem("ignoredFiles", "Ignored files", "", undefined, vscode.TreeItemCollapsibleState.Collapsed)
             ]);
         }
@@ -42,6 +47,19 @@ export class GModAddonInfoView implements vscode.TreeDataProvider<GModMenuItem> 
     refresh(): void {
         this.addonInfo = this.addonManager.getAddonInfo();
         this._onDidChangeTreeData.fire(undefined);
+    }
+
+    private isAddonTypeValid(type: AddonType): boolean {
+        return Object.values(AddonType).includes(type);
+    }
+
+    private areTagsValid(tags: AddonTag[]): boolean {
+        for (let i = 0; i < tags.length; i++) {
+            const tag = tags[i];
+            if (Object.values(AddonTag).includes(tag) == false)
+                return false;
+        }
+        return true;
     }
 }
 
