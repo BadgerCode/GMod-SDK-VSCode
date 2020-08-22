@@ -106,10 +106,43 @@ export function activate(context: vscode.ExtensionContext) {
 	});
 	context.subscriptions.push(refreshAddonInfoCommand);
 
-	let editAddonInfoCommand = vscode.commands.registerCommand('gmodAddonInfo.edit', () => {
-		addonManager.openEditor();
+	let setAddonTitle = vscode.commands.registerCommand('gmodAddonInfo.setTitle', () => {
+		vscode.window.showInputBox({ prompt: "Enter the title of your addon. This is only used the first time you upload your addon. E.g. AK47 TTT weapon" })
+			.then(response => {
+				if (response == undefined)
+					return;
+
+				var addonInfo = addonManager.getAddonInfo();
+				if (addonInfo == undefined) {
+					vscode.window.showErrorMessage("addon.json is missing");
+					return;
+				}
+
+				addonInfo.title = response;
+				addonManager.save(addonInfo);
+				gmodAddonInfoView.refresh();
+			})
 	});
-	context.subscriptions.push(editAddonInfoCommand);
+	context.subscriptions.push(setAddonTitle);
+
+	let setAddonDescription = vscode.commands.registerCommand('gmodAddonInfo.setDescription', () => {
+		vscode.window.showInputBox({ prompt: "Enter the description of your addon. This is only used the first time you upload your addon." })
+			.then(response => {
+				if (response == undefined)
+					return;
+
+				var addonInfo = addonManager.getAddonInfo();
+				if (addonInfo == undefined) {
+					vscode.window.showErrorMessage("addon.json is missing");
+					return;
+				}
+
+				addonInfo.description = response;
+				addonManager.save(addonInfo);
+				gmodAddonInfoView.refresh();
+			})
+	});
+	context.subscriptions.push(setAddonDescription);
 
 	let setAddonTypeCommand = vscode.commands.registerCommand('gmodAddonInfo.setType', () => {
 		new AddonTypeWizard(addonManager)

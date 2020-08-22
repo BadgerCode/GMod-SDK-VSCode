@@ -102,8 +102,16 @@
 				}
 			},
 			{
-				"command": "gmodAddonInfo.edit",
-				"title": "Open addon.json",
+				"command": "gmodAddonInfo.setTitle",
+				"title": "Edit addon title",
+				"icon": {
+					"light": "resources/light/edit.svg",
+					"dark": "resources/dark/edit.svg"
+				}
+			},
+			{
+				"command": "gmodAddonInfo.setDescription",
+				"title": "Edit addon description",
 				"icon": {
 					"light": "resources/light/edit.svg",
 					"dark": "resources/dark/edit.svg"
@@ -149,7 +157,11 @@
 		"menus": {
 			"commandPalette": [
 				{
-					"command": "gmodAddonInfo.edit",
+					"command": "gmodAddonInfo.setTitle",
+					"when": "false"
+				},
+				{
+					"command": "gmodAddonInfo.setDescription",
 					"when": "false"
 				},
 				{
@@ -185,11 +197,6 @@
 					"group": "navigation"
 				},
 				{
-					"command": "gmodAddonInfo.edit",
-					"when": "view == gmodAddonInfo",
-					"group": "navigation"
-				},
-				{
 					"command": "gmodSDK.createWeapon",
 					"when": "view == gmodAddonWeapons",
 					"group": "navigation"
@@ -206,6 +213,16 @@
 				}
 			],
 			"view/item/context": [
+				{
+					"command": "gmodAddonInfo.setTitle",
+					"when": "view == gmodAddonInfo && viewItem == title",
+					"group": "inline"
+				},
+				{
+					"command": "gmodAddonInfo.setDescription",
+					"when": "view == gmodAddonInfo && viewItem == description",
+					"group": "inline"
+				},
 				{
 					"command": "gmodAddonInfo.setType",
 					"when": "view == gmodAddonInfo && viewItem == type",

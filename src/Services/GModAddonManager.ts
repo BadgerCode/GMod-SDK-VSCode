@@ -46,19 +46,6 @@ export class GModAddonManager {
         fs.writeFileSync(addonJSONPath, JSON.stringify(addonInfo, null, 4));
     }
 
-    openEditor(): void {
-        if (!this.workspaceRoot) {
-            return;
-        }
-
-        const addonJSONPath = path.join(this.workspaceRoot, 'addon.json');
-        if (this.pathExists(addonJSONPath) == false) {
-            return undefined;
-        }
-
-        this.openFile(addonJSONPath);
-    }
-
     private pathExists(p: string): boolean {
         try {
             fs.accessSync(p);
@@ -66,17 +53,6 @@ export class GModAddonManager {
             return false;
         }
         return true;
-    }
-
-    private openFile(filePath: string): void {
-        vscode.workspace
-            .openTextDocument(vscode.Uri.file(filePath))
-            .then((document: vscode.TextDocument) => {
-                vscode.window.showTextDocument(document, vscode.ViewColumn.Active, false).then(e => { });
-            }, (error: any) => {
-                console.error(error);
-                debugger;
-            });
     }
 }
 
