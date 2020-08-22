@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
-import { GModAddonManager, GModAddonInfo } from './GModAddonManager';
+import { GModAddonManager, GModAddonInfo } from '../Services/GModAddonManager';
 
 export class GModAddonInfoView implements vscode.TreeDataProvider<GModMenuItem> {
     private _onDidChangeTreeData: vscode.EventEmitter<GModMenuItem | undefined> = new vscode.EventEmitter<GModMenuItem | undefined>();

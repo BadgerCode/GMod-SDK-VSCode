@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
-import { GModWorkshopManager } from '../GModWorkshopManager';
+import { GModWorkshopManager } from '../Services/GModWorkshopManager';
 
 export class WorkshopThumbnailWizard {
 

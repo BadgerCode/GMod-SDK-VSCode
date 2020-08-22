@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { GModWeaponManager, GModWeaponTemplates } from '../GModWeaponManager';
+import { GModWeaponManager, GModWeaponTemplates } from '../Services/GModWeaponManager';
 
 export class CreateWeaponWizard {
 

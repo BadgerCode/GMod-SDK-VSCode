@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
-import { GModWorkshopManager, WorkshopItemVisibility } from './GModWorkshopManager';
+import { GModWorkshopManager, WorkshopItemVisibility } from '../Services/GModWorkshopManager';
 
 export class GModWorkshopView implements vscode.TreeDataProvider<GModWorkshopMenuItem> {
     private _onDidChangeTreeData: vscode.EventEmitter<GModWorkshopMenuItem | undefined> = new vscode.EventEmitter<GModWorkshopMenuItem | undefined>();

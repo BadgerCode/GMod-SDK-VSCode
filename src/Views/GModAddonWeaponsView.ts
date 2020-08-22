@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 import * as path from "path";
-import { GModWeaponManager, GModWeapon, GModWeaponOverview } from "./GModWeaponManager";
+import { GModWeaponManager, GModWeapon, GModWeaponOverview } from "../Services/GModWeaponManager";
 
 export class GModAddonWeaponsView implements vscode.TreeDataProvider<GModWeaponMenuItem> {
     private _onDidChangeTreeData: vscode.EventEmitter<GModWeaponMenuItem | undefined> = new vscode.EventEmitter<GModWeaponMenuItem | undefined>();

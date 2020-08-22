@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { GModWorkshopManager } from '../GModWorkshopManager';
+import { GModWorkshopManager } from '../Services/GModWorkshopManager';
 
 export class WorkshopUploadWizard {
 

@@ -1,15 +1,15 @@
 import * as vscode from 'vscode';
-import { GModAddonInfoView } from './GModAddonInfoView';
-import { GModAddonManager } from './GModAddonManager';
-import { GModAddonWeaponsView, GModWeaponMenuItem } from './GModAddonWeaponsView';
-import { GModWeaponManager } from './GModWeaponManager';
-import { GModWorkshopView, GModWorkshopMenuItem } from './GModWorkshopView';
-import { GModWorkshopManager } from './GModWorkshopManager';
+import * as path from 'path';
 import { WorkshopUploadWizard } from './Wizards/WorkshopUploadWizard';
 import { WorkshopThumbnailWizard } from './Wizards/WorkshopThumbnailWizard';
 import { CreateWeaponWizard } from './Wizards/CreateWeaponWizard';
-import { LocalGModManager } from './LocalGModManager';
-import path = require('path');
+import { GModAddonManager } from './Services/GModAddonManager';
+import { GModWeaponManager } from './Services/GModWeaponManager';
+import { GModWorkshopManager } from './Services/GModWorkshopManager';
+import { LocalGModManager } from './Services/LocalGModManager';
+import { GModAddonInfoView } from './Views/GModAddonInfoView';
+import { GModAddonWeaponsView, GModWeaponMenuItem } from './Views/GModAddonWeaponsView';
+import { GModWorkshopView, GModWorkshopMenuItem } from './Views/GModWorkshopView';
 
 
 export function activate(context: vscode.ExtensionContext) {
