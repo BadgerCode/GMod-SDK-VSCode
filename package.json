@@ -110,6 +110,14 @@
 				}
 			},
 			{
+				"command": "gmodAddonInfo.setType",
+				"title": "Set addon type",
+				"icon": {
+					"light": "resources/light/edit.svg",
+					"dark": "resources/dark/edit.svg"
+				}
+			},
+			{
 				"command": "gmodAddonInfo.refresh",
 				"title": "Refresh",
 				"icon": {
@@ -182,6 +190,11 @@
 				}
 			],
 			"view/item/context": [
+				{
+					"command": "gmodAddonInfo.setType",
+					"when": "view == gmodAddonInfo && viewItem == type",
+					"group": "inline"
+				},
 				{
 					"command": "gmodWeapon.edit",
 					"when": "view == gmodAddonWeapons && viewItem =~ /^weapons\\..*/",

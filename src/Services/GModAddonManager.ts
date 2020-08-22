@@ -16,7 +16,7 @@ export class GModAddonManager {
             return undefined;
         }
 
-        var addonInfo = <GModAddonInfo>JSON.parse(fs.readFileSync(addonJSONPath, 'utf8'))
+        var addonInfo = <GModAddonInfo>JSON.parse(fs.readFileSync(addonJSONPath, 'utf8'));
         return addonInfo;
     }
 
@@ -34,9 +34,16 @@ export class GModAddonManager {
 
         var addonInfo = new GModAddonInfo("My GMod Addon");
 
-        fs.writeFileSync(addonJSONPath, JSON.stringify(addonInfo, null, 4));
-
+        this.save(addonInfo);
         vscode.window.showInformationMessage('Created addon.json');
+    }
+
+    save(addonInfo: GModAddonInfo) {
+        if (!this.workspaceRoot)
+            return;
+
+        const addonJSONPath = path.join(this.workspaceRoot, 'addon.json');
+        fs.writeFileSync(addonJSONPath, JSON.stringify(addonInfo, null, 4));
     }
 
     openEditor(): void {
@@ -109,8 +116,8 @@ export class GModAddonInfo {
     }
 }
 
-enum AddonType {
-    ServerContent = "ServerContent",
+export enum AddonType {
+    ServerContent = "servercontent",
     Gamemode = "gamemode",
     Map = "map",
     Weapon = "weapon",
@@ -121,7 +128,7 @@ enum AddonType {
     Model = "model"
 }
 
-enum AddonTag {
+export enum AddonTag {
     Fun = "fun",
     Roleplay = "roleplay",
     Scenic = "scenic",
