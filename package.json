@@ -118,6 +118,14 @@
 				}
 			},
 			{
+				"command": "gmodAddonInfo.setTags",
+				"title": "Set addon tags",
+				"icon": {
+					"light": "resources/light/edit.svg",
+					"dark": "resources/dark/edit.svg"
+				}
+			},
+			{
 				"command": "gmodAddonInfo.refresh",
 				"title": "Refresh",
 				"icon": {
@@ -142,6 +150,14 @@
 			"commandPalette": [
 				{
 					"command": "gmodAddonInfo.edit",
+					"when": "false"
+				},
+				{
+					"command": "gmodAddonInfo.setType",
+					"when": "false"
+				},
+				{
+					"command": "gmodAddonInfo.setTags",
 					"when": "false"
 				},
 				{
@@ -193,6 +209,11 @@
 				{
 					"command": "gmodAddonInfo.setType",
 					"when": "view == gmodAddonInfo && viewItem == type",
+					"group": "inline"
+				},
+				{
+					"command": "gmodAddonInfo.setTags",
+					"when": "view == gmodAddonInfo && viewItem == tags",
 					"group": "inline"
 				},
 				{

@@ -25,14 +25,9 @@ export class GModAddonInfoView implements vscode.TreeDataProvider<GModMenuItem> 
                 new GModMenuItem("title", "Title", this.addonInfo.title),
                 new GModMenuItem("description", "Description", this.addonInfo.description),
                 new GModMenuItem("type", "Type", this.addonInfo.type),
-                new GModMenuItem("tags", "Tags", "", undefined, vscode.TreeItemCollapsibleState.Expanded),
+                new GModMenuItem("tags", "Tags", this.addonInfo.tags.join(", ")),
                 new GModMenuItem("ignoredFiles", "Ignored files", "", undefined, vscode.TreeItemCollapsibleState.Collapsed)
             ]);
-        }
-        else if (element.id == "tags") {
-            return Promise.resolve(
-                this.addonInfo.tags.map((tag, index) => new GModMenuItem(`tags.${index}`, tag, ""))
-            );
         }
         else if (element.id == "ignoredFiles") {
             return Promise.resolve(

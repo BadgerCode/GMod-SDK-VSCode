@@ -11,6 +11,7 @@ import { GModAddonInfoView } from './Views/GModAddonInfoView';
 import { GModAddonWeaponsView, GModWeaponMenuItem } from './Views/GModAddonWeaponsView';
 import { GModWorkshopView, GModWorkshopMenuItem } from './Views/GModWorkshopView';
 import { AddonTypeWizard } from './Wizards/AddonTypeWizard';
+import { AddonTagsWizard } from './Wizards/AddonTagsWizard';
 
 
 export function activate(context: vscode.ExtensionContext) {
@@ -116,6 +117,13 @@ export function activate(context: vscode.ExtensionContext) {
 			.then(() => { gmodAddonInfoView.refresh(); });
 	});
 	context.subscriptions.push(setAddonTypeCommand);
+
+	let setAddonTagsCommand = vscode.commands.registerCommand('gmodAddonInfo.setTags', () => {
+		new AddonTagsWizard(addonManager)
+			.show()
+			.then(() => { gmodAddonInfoView.refresh(); });
+	});
+	context.subscriptions.push(setAddonTagsCommand);
 
 
 	let editWeaponCommand = vscode.commands.registerCommand('gmodWeapon.edit', (item: GModWeaponMenuItem) => {
