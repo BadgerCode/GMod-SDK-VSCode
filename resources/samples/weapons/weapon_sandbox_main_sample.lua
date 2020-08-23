@@ -42,24 +42,22 @@ SWEP.WorldModel = "models/weapons/w_rif_ak47.mdl"
 
 
 function SWEP:PrimaryAttack()
-    -- Make sure we can shoot first
+    -- Checks if we have enough ammo to shoot
     if (self:CanPrimaryAttack() == false) then return end
 
-    self:ShootBullet(self.Primary.Damage, 1, self.Primary.Cone, self.Primary.Ammo)
+    -- weapon_base: SWEP:ShootBullet(damage, numberOfBullets, aimcone, ammoType, force, tracer)
+    -- Shoots a bullet, handles player/weapon animations & applies recoil
+    self:ShootBullet(
+        self.Primary.Damage,
+        1,
+        self.Primary.Cone,
+        self.Primary.Ammo
+    )
+
     self:TakePrimaryAmmo(1)
 
-    -- Shoot animation
-    self:SendWeaponAnim(ACT_VM_PRIMARYATTACK)
-    self.Owner:MuzzleFlash()
-    self.Owner:SetAnimation(PLAYER_ATTACK1)
+    self:EmitSound(self.Primary.Sound)
 
-    -- Fire sound
-    self:EmitSound(Sound(self.Primary.Sound))
-
-    -- Knockback
-    if (!self.Owner:IsNPC()) then self.Owner:ViewPunch(Angle(-self.Primary.Recoil, 0, 0 )) end
-
-    -- Delay when the gun can next be fired
     self:SetNextPrimaryFire(CurTime() + self.Primary.Delay)
 end
 
@@ -73,9 +71,4 @@ function SWEP:SecondaryAttack()
 
     -- Delay when the gun can next be fired (secondary attack)
     self:SetNextSecondaryFire(CurTime() + self.Secondary.Delay)
-end
-
-function SWEP:Reload()
-    self:DefaultReload(ACT_VM_RELOAD)
-    return true
 end

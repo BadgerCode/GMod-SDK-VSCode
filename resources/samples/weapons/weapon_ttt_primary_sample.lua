@@ -38,3 +38,33 @@ SWEP.HeadshotMultiplier    = 2.2
 
 SWEP.IronSightsPos         = Vector(-5.96, -5.119, 2.349)
 SWEP.IronSightsAng         = Vector(0, 0, 0)
+
+
+function SWEP:PrimaryAttack()
+   -- Checks if we have enough ammo to shoot
+   if not self:CanPrimaryAttack() then return end
+
+   -- weapon_tttbase: SWEP:ShootBullet(damage, recoil, numberOfBullets, cone)
+   -- Shoots a bullet, handles player/weapon animations & applies recoil
+   self:ShootBullet(
+      self.Primary.Damage,
+      self.Primary.Recoil,
+      self.Primary.NumShots,
+      self:GetPrimaryCone()
+   )
+
+   self:TakePrimaryAmmo(self.Primary.NumShots)
+
+   self:EmitSound(self.Primary.Sound)
+
+   self:SetNextPrimaryFire(CurTime() + self.Primary.Delay)
+end
+
+
+function SWEP:SecondaryAttack()
+   if self.NoSights or (not self.IronSightsPos) then return end
+
+   self:SetIronsights(not self:GetIronsights())
+
+   self:SetNextSecondaryFire(CurTime() + 0.3)
+end
