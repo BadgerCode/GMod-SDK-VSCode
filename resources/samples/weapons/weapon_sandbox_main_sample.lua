@@ -49,12 +49,12 @@ function SWEP:PrimaryAttack()
     self:TakePrimaryAmmo(1)
 
     -- Shoot animation
-    self.Weapon:SendWeaponAnim(ACT_VM_PRIMARYATTACK)
+    self:SendWeaponAnim(ACT_VM_PRIMARYATTACK)
     self.Owner:MuzzleFlash()
     self.Owner:SetAnimation(PLAYER_ATTACK1)
 
     -- Fire sound
-    self.Weapon:EmitSound(Sound(self.Primary.Sound))
+    self:EmitSound(Sound(self.Primary.Sound))
 
     -- Knockback
     if (!self.Owner:IsNPC()) then self.Owner:ViewPunch(Angle(-self.Primary.Recoil, 0, 0 )) end
