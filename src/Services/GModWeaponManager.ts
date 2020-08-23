@@ -102,22 +102,27 @@ export class GModWeaponManager {
             fs.mkdirSync(weaponsPath, { recursive: true });
         }
 
-        var sampleWeaponPath = path.join(weaponsPath, `${weaponTemplate.WeaponNamePrefix}${weaponName}.lua`);
+        var newWeaponName = `${weaponTemplate.WeaponNamePrefix}${weaponName}`;
+        var newWeaponPath = path.join(weaponsPath, `${newWeaponName}.lua`);
         var uniqueNumber = 1;
-        while (this.pathExists(sampleWeaponPath)) {
-            sampleWeaponPath = path.join(
-                weaponsPath,
-                `${weaponTemplate.WeaponNamePrefix}${weaponName}${uniqueNumber++}.lua`
-            );
+        while (this.pathExists(newWeaponPath)) {
+            newWeaponName = `${weaponTemplate.WeaponNamePrefix}${weaponName}${uniqueNumber++}`;
+            newWeaponPath = path.join(weaponsPath, `${newWeaponName}.lua`);
         }
 
         var sampleWeaponTemplatePath = path.join(this.samplesRoot, "weapons", weaponTemplate.Filename);
-        // TODO: Check if template exists
-        var sampleWeaponLua = fs.readFileSync(sampleWeaponTemplatePath, "utf8");
+        if (this.pathExists(sampleWeaponTemplatePath) == false) {
+            vscode.window.showErrorMessage(`Unable to find template '${weaponTemplate.Filename}'`);
+            return;
+        }
 
-        fs.writeFileSync(sampleWeaponPath, sampleWeaponLua);
+        var sampleWeaponLua = fs
+            .readFileSync(sampleWeaponTemplatePath, "utf8")
+            .replace(/\$WEAPON_NAME\$/g, newWeaponName);
 
-        this.openFile(sampleWeaponPath);
+        fs.writeFileSync(newWeaponPath, sampleWeaponLua);
+
+        this.openFile(newWeaponPath);
     }
 
     private pathExists(p: string): boolean {

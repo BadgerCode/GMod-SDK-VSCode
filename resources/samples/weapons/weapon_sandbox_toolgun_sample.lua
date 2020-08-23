@@ -3,7 +3,7 @@
 -- =========
 -- Set this to your file name without the ".lua" on the end
 -- Sandbox tools use the filename for storing information and translations
-local FileName = "cool_tool"
+local FileName = "$WEAPON_NAME$"
 
 
 TOOL.Category = "My Category"
