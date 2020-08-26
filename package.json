@@ -2,7 +2,7 @@
 	"name": "gmod-sdk",
 	"displayName": "GMod SDK",
 	"description": "Tools for Garry's Mod addon development",
-	"version": "0.2.0",
+	"version": "0.2.1",
 	"publisher": "BadgerCode",
 	"repository": {
 		"type": "git",
