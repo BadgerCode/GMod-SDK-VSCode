@@ -88,7 +88,7 @@ export class GModAddonInfo {
         this.description = "";
         this.type = AddonType.ServerContent;
         this.tags = [AddonTag.Fun];
-        this.ignore = [".git/*", "README.md"];
+        this.ignore = [".git/*", ".gitignore", "README.md", "*.gma"];
     }
 }
 
